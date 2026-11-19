@@ -40,9 +40,9 @@
     }
     .status-offline { background: #fff3e0; border-color: #ffcc80; color: #e65100; }
 
-    .tabs { display: flex; gap: 10px; margin-bottom: 16px; }
+    .tabs { display: flex; gap: 8px; margin-bottom: 16px; }
     .tab-btn {
-      flex: 1; padding: 14px 10px; border: none; border-radius: 8px; font-weight: bold;
+      flex: 1; padding: 14px 8px; border: none; border-radius: 8px; font-weight: bold;
       background: #d5ddd7; color: #37474f; cursor: pointer; font-size: 0.95rem; transition: 0.2s;
     }
     .tab-btn.active { background: var(--primary); color: #fff; box-shadow: 0 2px 6px rgba(27,94,32,0.3); }
@@ -60,6 +60,7 @@
       font-size: 0.9rem; color: #37474f; margin: 0 0 14px 0; line-height: 1.45;
       background: #f7faf7; padding: 10px 12px; border-radius: 6px; border-left: 4px solid var(--primary-light);
     }
+    .hint { font-size: 0.8rem; color: #607d8b; margin-top: 4px; }
 
     .form-grid {
       display: grid;
@@ -68,10 +69,27 @@
     }
     label.field-label { display: block; font-size: 0.88rem; font-weight: 600; margin-bottom: 6px; }
     input[type="text"] {
-      width: 100%; padding: 11px; border: 1px solid #bdbdbd; border-radius: 6px; font-size: 1rem;
+      width: 100%; padding: 11px; border: 1px solid #bdbdbd; border-radius: 6px; font-size: 1rem; background: #fff;
     }
     input[type="text"]:focus { outline: none; border-color: var(--primary); box-shadow: 0 0 0 2px rgba(27,94,32,0.15); }
     input[type="text"].invalid { border-color: var(--danger); }
+    input[type="text"][readonly] { background: #f5f5f5; color: #455a64; }
+
+    /* PRODUTO */
+    .select {
+      width: 100%; padding: 11px; border: 1px solid #bdbdbd; border-radius: 6px; font-size: 1rem; background: #fff; color: var(--text);
+    }
+    .select.invalid { border-color: var(--danger); }
+    .select:disabled { background: #f5f5f5; color: #455a64; }
+    .produto-info {
+      margin-top: 10px; background: #f7faf7; border-left: 4px solid var(--primary-light); border-radius: 6px;
+      padding: 10px 12px; font-size: 0.86rem; line-height: 1.5; color: #37474f;
+    }
+    .sync-info { font-size: 0.8rem; color: #546e7a; text-align: center; margin-top: 4px; }
+
+    /* NÚMEROS DE CA */
+    .ca-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 10px; }
+    .ca-grid label { font-size: 0.82rem; font-weight: 600; display: block; margin-bottom: 4px; }
 
     /* TABELA RESPONSIVA DE INSPEÇÃO */
     .epi-table { width: 100%; border-collapse: collapse; margin-top: 8px; }
@@ -110,6 +128,8 @@
     .radio-btn:focus-visible, .tab-btn:focus-visible, .camera-btn:focus-within, .btn-submit:focus-visible {
       outline: 3px solid #81c784; outline-offset: 2px;
     }
+    body.readonly .radio-btn { cursor: default; }
+    body.readonly .radio-btn:not(.selected) { opacity: 0.35; }
 
     /* FOTOS */
     .photo-grid {
@@ -130,6 +150,25 @@
     input[type="file"] { position: absolute; width: 1px; height: 1px; opacity: 0; overflow: hidden; }
     .preview-img { max-width: 100%; max-height: 260px; border-radius: 6px; margin-top: 10px; border: 1px solid #ccc; }
     .photo-error { color: var(--danger); font-size: 0.85rem; font-weight: 700; margin-top: 8px; }
+    .photo-info { font-size: 0.82rem; color: #2e7d32; font-weight: bold; margin-top: 6px; }
+    .photo-gps { font-size: 0.78rem; color: #455a64; margin-top: 2px; }
+    .photo-wait { font-size: 0.85rem; color: #455a64; margin-top: 8px; }
+
+    /* ASSINATURA */
+    .sig-wrap { position: relative; }
+    .sig-canvas {
+      width: 100%; height: 170px; border: 2px dashed #9e9e9e; border-radius: 8px;
+      background: #fff; touch-action: none; display: block; cursor: crosshair;
+    }
+    .sig-lock {
+      position: absolute; inset: 0; display: none; align-items: center; justify-content: center; text-align: center;
+      background: rgba(245,245,245,0.92); border-radius: 8px; font-size: 0.9rem; color: #546e7a; font-weight: 600; padding: 12px;
+    }
+    .sig-wrap.locked .sig-lock { display: flex; }
+    .sig-actions { display: flex; gap: 8px; margin-top: 8px; }
+    .sig-actions button { flex: 1; }
+    .sig-img { max-width: 100%; max-height: 150px; border: 1px solid #c8e6c9; border-radius: 6px; background: #fff; }
+    .sig-done { text-align: center; }
 
     .alert-box {
       background: #ffebee; color: var(--danger); padding: 12px; border-radius: 6px;
@@ -140,11 +179,16 @@
       font-size: 1.05rem; font-weight: bold; color: #fff; background: #9e9e9e;
       cursor: not-allowed; margin-top: 8px; transition: 0.2s;
     }
-    .btn-submit.ready { background: #1da851; cursor: pointer; box-shadow: 0 3px 10px rgba(37,211,102,0.4); }
+    .btn-submit.ready { background: #178a43; cursor: pointer; box-shadow: 0 3px 10px rgba(37,211,102,0.4); }
     .btn-secondary {
       width: 100%; padding: 13px; border: 2px solid var(--primary-light); border-radius: 8px;
       font-size: 0.95rem; font-weight: bold; color: var(--primary); background: #fff; cursor: pointer; margin-top: 8px;
     }
+    .btn-light {
+      padding: 11px 14px; min-height: 44px; border: 1px solid #b0bec5; border-radius: 6px;
+      background: #fff; color: #37474f; font-weight: 600; font-size: 0.88rem; cursor: pointer;
+    }
+    .btn-ok { background: var(--primary-light); color: #fff; border-color: var(--primary); }
     .btn-download {
       display: inline-block; margin-top: 8px; font-size: 0.82rem; color: var(--primary);
       text-decoration: underline; cursor: pointer; background: none; border: none; font-weight: 600; padding: 6px;
@@ -155,6 +199,33 @@
       background: none; border: 1px solid #b0bec5; color: #455a64; border-radius: 6px;
       padding: 10px 14px; font-size: 0.85rem; cursor: pointer;
     }
+
+    /* AVISOS */
+    .day-banner {
+      display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 10px;
+      padding: 12px 14px; border-radius: 8px; margin-bottom: 12px; font-size: 0.9rem; line-height: 1.4;
+    }
+    .day-banner.pending { background: #fff8e1; border: 1px solid #ffca28; color: #5d4037; }
+    .day-banner.past { background: #e3f2fd; border: 1px solid #64b5f6; color: #0d47a1; }
+    .banner-btn {
+      border: none; border-radius: 6px; padding: 10px 14px; min-height: 44px; font-weight: bold;
+      font-size: 0.88rem; cursor: pointer; background: var(--primary); color: #fff;
+    }
+    .ocorrencia { margin-top: 6px; font-size: 0.78rem; font-weight: 600; color: #b71c1c; text-align: right; }
+    .ocorrencia.ok { color: #e65100; }
+
+    /* HISTÓRICO */
+    .hist-day { font-weight: 700; color: var(--primary); margin: 14px 0 6px; font-size: 0.95rem; }
+    .hist-day:first-child { margin-top: 0; }
+    .hist-item {
+      display: flex; align-items: center; justify-content: space-between; gap: 10px;
+      border: 1px solid var(--border); border-radius: 8px; padding: 10px 12px; margin-bottom: 8px; background: #fcfdfc;
+    }
+    .hist-item.current { border-color: #81c784; background: #f1f8e9; }
+    .hist-main { flex: 1; font-size: 0.88rem; line-height: 1.5; }
+    .hist-status { font-size: 0.8rem; color: #455a64; }
+    .hist-empty { color: #78909c; font-size: 0.9rem; text-align: center; padding: 20px 0; }
+
     .hidden { display: none !important; }
 
     .toast {
@@ -168,8 +239,8 @@
     /* RESPONSIVIDADE PARA TELAS PEQUENAS (CELULAR) */
     @media (max-width: 768px) {
       body { padding: 10px; }
-      .tabs { gap: 6px; }
-      .tab-btn { font-size: 0.85rem; padding: 12px 6px; }
+      .tabs { gap: 5px; }
+      .tab-btn { font-size: 0.8rem; padding: 12px 4px; }
       .epi-table thead { display: none; }
       .epi-table, .epi-table tbody, .epi-table tr, .epi-table td { display: block; width: 100%; }
       .epi-table tr {
@@ -185,6 +256,9 @@
       .radio-group { width: 100%; }
       .radio-btn { flex: 1; text-align: center; }
       .hig-item { flex-direction: column; align-items: stretch; }
+      .ocorrencia { text-align: left; }
+      .banner-btn { width: 100%; }
+      .hist-item { flex-direction: column; align-items: stretch; }
     }
   </style>
 </head>
@@ -201,28 +275,42 @@
     <span id="connText">🟢 Online</span>
   </div>
 
+  <div id="banners" aria-live="polite"></div>
+
   <div class="tabs" role="tablist">
-    <button id="btnTabInicio" class="tab-btn active" role="tab" aria-selected="true" onclick="switchTab('inicio')">1. Início de Turno (Inspeção)<span class="badge" id="badgeInicio"></span></button>
-    <button id="btnTabFim" class="tab-btn" role="tab" aria-selected="false" onclick="switchTab('fim')">2. Pós-Jornada (Higienização)<span class="badge" id="badgeFim"></span></button>
+    <button id="btnTab-inicio" class="tab-btn active" role="tab" aria-selected="true" onclick="switchTab('inicio')">1. Início de Turno<span class="badge" id="badge-inicio"></span></button>
+    <button id="btnTab-fim" class="tab-btn" role="tab" aria-selected="false" onclick="switchTab('fim')">2. Higienização<span class="badge" id="badge-fim"></span></button>
+    <button id="btnTab-hist" class="tab-btn" role="tab" aria-selected="false" onclick="switchTab('hist')">3. Histórico<span class="badge" id="badge-hist"></span></button>
   </div>
 
-  <!-- IDENTIFICAÇÃO (comum às duas abas) -->
-  <div class="card">
+  <!-- IDENTIFICAÇÃO (comum às abas 1 e 2) -->
+  <div class="card" id="card-ident">
     <h2>Identificação da Equipe</h2>
     <div class="form-grid">
       <div>
         <label class="field-label" for="operador">Nome do Aplicador / Operador *</label>
-        <input type="text" id="operador" placeholder="Ex: João Silva" autocomplete="name" maxlength="60" oninput="saveState()">
+        <input type="text" id="operador" data-field="operador" placeholder="Ex: João Silva" autocomplete="name" maxlength="60" oninput="onFieldInput(this)" onblur="flushSave()">
       </div>
       <div>
         <label class="field-label" for="talhao">Talhão / Fazenda *</label>
-        <input type="text" id="talhao" placeholder="Ex: Fazenda Capão Alto - Talhão 04" maxlength="80" oninput="saveState()">
+        <input type="text" id="talhao" data-field="talhao" placeholder="Ex: Fazenda Capão Alto - Talhão 04" maxlength="80" oninput="onFieldInput(this)" onblur="flushSave()">
+      </div>
+      <div>
+        <label class="field-label" for="inspetor">Responsável pela inspeção (encarregado/técnico) *</label>
+        <input type="text" id="inspetor" data-field="inspetor" placeholder="Ex: Carlos Souza" maxlength="60" oninput="onFieldInput(this)" onblur="flushSave()">
+        <div class="hint">Se o próprio operador fez a inspeção, repita o nome dele.</div>
       </div>
     </div>
   </div>
 
   <!-- ABA 1: INÍCIO DE TURNO -->
   <div id="tab-inicio" role="tabpanel">
+    <div class="card">
+      <h2>Produto (isca) utilizado hoje *</h2>
+      <select id="produto" class="select" onchange="onProdutoChange(this)" aria-label="Produto (isca) utilizado"></select>
+      <div id="produto-info" class="produto-info hidden"></div>
+    </div>
+
     <div class="card">
       <h2>1. Checklist diário de inspeção de EPIs</h2>
       <p class="intro-text">
@@ -247,15 +335,21 @@
     </div>
 
     <div class="card">
+      <h2>Números de CA dos EPIs</h2>
+      <p class="hint" style="margin-top:0;">Número do Certificado de Aprovação gravado em cada EPI. O app lembra os números nos próximos dias; altere quando trocar o EPI.</p>
+      <div class="ca-grid" id="ca-grid"></div>
+    </div>
+
+    <div class="card">
       <h2>Evidência Fotográfica Obrigatória (Pré-Trabalho)</h2>
       <p style="font-size:0.86rem; color:#555; margin-top:0;">
-        A foto é carimbada automaticamente com <strong>data e hora</strong>, operador e local. Fotos antigas da galeria são recusadas.
+        A foto é carimbada automaticamente com <strong>data, hora, GPS</strong>, operador e local. Fotos antigas da galeria são recusadas.
       </p>
 
       <div class="photo-grid">
         <div class="photo-box" id="box-fotoEpi">
           <strong>Foto 1: Operador vestido com todos os EPIs *</strong>
-          <label class="camera-btn">
+          <label class="camera-btn" onclick="warmGps()">
             <span class="cam-label">📷 Tirar Foto Agora</span>
             <input type="file" accept="image/*" capture="environment" onchange="processPhoto(event, 'fotoEpi')">
           </label>
@@ -264,7 +358,7 @@
 
         <div class="photo-box" id="box-fotoDosador">
           <strong>Foto 2: Aplicador Dosador e Luvas Nitrílicas *</strong>
-          <label class="camera-btn">
+          <label class="camera-btn" onclick="warmGps()">
             <span class="cam-label">📷 Tirar Foto Agora</span>
             <input type="file" accept="image/*" capture="environment" onchange="processPhoto(event, 'fotoDosador')">
           </label>
@@ -273,13 +367,18 @@
       </div>
     </div>
 
-    <button type="button" id="btnSendInicio" class="btn-submit" disabled onclick="sendWhatsApp('inicio')">
-      🔒 Preencha tudo (OK) e tire as 2 fotos para liberar
+    <div class="card">
+      <h2>✍️ Assinatura do responsável pela inspeção *</h2>
+      <div id="sig-inicio"></div>
+    </div>
+
+    <button type="button" id="btnSend-inicio" class="btn-submit" disabled onclick="sendWhatsApp('inicio')">🔒</button>
+    <button type="button" id="btnShare-inicio" class="btn-secondary hidden" onclick="shareReport('inicio')">
+      📤 Compartilhar relatório em PDF (escolher grupo/contato)
     </button>
-    <button type="button" id="btnShareInicio" class="btn-secondary hidden" onclick="shareReport('inicio')">
-      📤 Compartilhar relatório + fotos (escolher grupo/contato)
-    </button>
-    <div id="sentInicio" class="sent-info"></div>
+    <button type="button" id="btnPdf-inicio" class="btn-secondary" onclick="downloadPdf('inicio')">📄 Baixar relatório em PDF</button>
+    <div id="sent-inicio" class="sent-info"></div>
+    <div id="sync-inicio" class="sync-info"></div>
   </div>
 
   <!-- ABA 2: PÓS-JORNADA -->
@@ -297,7 +396,7 @@
       <div class="photo-grid">
         <div class="photo-box" id="box-fotoLimpeza">
           <strong>Foto 3: EPIs higienizados secando à sombra / Armário exclusivo *</strong>
-          <label class="camera-btn">
+          <label class="camera-btn" onclick="warmGps()">
             <span class="cam-label">📷 Tirar Foto Agora</span>
             <input type="file" accept="image/*" capture="environment" onchange="processPhoto(event, 'fotoLimpeza')">
           </label>
@@ -306,13 +405,27 @@
       </div>
     </div>
 
-    <button type="button" id="btnSendFim" class="btn-submit" disabled onclick="sendWhatsApp('fim')">
-      🔒 Confirme os 6 passos (OK) e tire a foto para enviar
+    <div class="card">
+      <h2>✍️ Assinatura do operador *</h2>
+      <div id="sig-fim"></div>
+    </div>
+
+    <button type="button" id="btnSend-fim" class="btn-submit" disabled onclick="sendWhatsApp('fim')">🔒</button>
+    <button type="button" id="btnShare-fim" class="btn-secondary hidden" onclick="shareReport('fim')">
+      📤 Compartilhar relatório em PDF (escolher grupo/contato)
     </button>
-    <button type="button" id="btnShareFim" class="btn-secondary hidden" onclick="shareReport('fim')">
-      📤 Compartilhar relatório + foto (escolher grupo/contato)
-    </button>
-    <div id="sentFim" class="sent-info"></div>
+    <button type="button" id="btnPdf-fim" class="btn-secondary" onclick="downloadPdf('fim')">📄 Baixar relatório em PDF</button>
+    <div id="sent-fim" class="sent-info"></div>
+    <div id="sync-fim" class="sync-info"></div>
+  </div>
+
+  <!-- ABA 3: HISTÓRICO -->
+  <div id="tab-hist" class="hidden" role="tabpanel">
+    <div class="card">
+      <h2>Histórico de inspeções neste aparelho</h2>
+      <p class="hint" style="margin-top:0;">Os registros ficam guardados no celular por <span id="histDias"></span> dias. Toque em "Abrir" para ver ou reenviar.</p>
+      <div id="hist-list"></div>
+    </div>
   </div>
 
   <div id="installBox" class="card hidden" style="text-align:center;">
@@ -322,7 +435,7 @@
   </div>
 
   <div class="footer-actions">
-    <button type="button" class="btn-reset" onclick="resetInspection()">🔄 Nova inspeção (outro operador)</button>
+    <button type="button" id="btnNew" class="btn-reset" onclick="newInspection()">➕ Nova inspeção (outro operador)</button>
     <div id="appVersion" style="font-size:0.75rem; color:#90a4ae; margin-top:10px;"></div>
   </div>
 </div>
@@ -333,11 +446,21 @@
 <script>
 'use strict';
 
+/* =====================================================================
+   CONFIGURAÇÃO
+   ===================================================================== */
 const WHATSAPP_PADRAO = '5549999220040';
-const STORAGE_PREFIX = 'cgs_epi_';
-const DIAS_HISTORICO = 3;          // dias de registros mantidos no aparelho
-const IDADE_MAX_FOTO_MIN = 10;     // foto com mais de X minutos é considerada "da galeria"
+const REC_PREFIX = 'cgs_epi_';          // registros: cgs_epi_2026-11-18, cgs_epi_2026-11-18#2 ...
+const KEY_ATUAL = 'cgsepi_atual';       // qual registro está em edição
+const KEY_PERFIL = 'cgsepi_perfil';     // últimos valores usados (preenchimento automático)
+const DIAS_HISTORICO = 30;              // dias que os registros ficam no aparelho
+const IDADE_MAX_FOTO_MIN = 10;          // foto com mais de X minutos é considerada "da galeria"
+const DESFAZER_SEG = 15;                // NÃO OK desfeito em até X s = toque errado
+const GPS_ESPERA_MS = 6000;             // quanto esperar o GPS ao tirar a foto
+const GPS_IDADE_MAX_MS = 3 * 60000;     // posição recente aceita sem nova leitura
 const PHOTO_KEYS = ['fotoEpi', 'fotoDosador', 'fotoLimpeza'];
+const MEDIA_NAMES = PHOTO_KEYS.concat(['sig_inicio', 'sig_fim']);
+const PHOTO_LABEL = { fotoEpi: 'Foto 1 (EPIs completos)', fotoDosador: 'Foto 2 (Dosador/Luvas)', fotoLimpeza: 'Foto 3 (Secagem/Armazenamento)' };
 
 const ITENS_INICIO = [
   { id: 'vestimenta', equip: 'Vestimenta (calça e camisa)',
@@ -360,6 +483,62 @@ const ITENS_INICIO = [
     reprovacao: 'EPI sem CA visível ou com prazo de validade vencido.' }
 ];
 
+// Itens extras que alguns produtos exigem na bula
+const ITENS_EXTRAS = {
+  oculos: { id: 'oculos', equip: 'Óculos de proteção',
+    inspecionar: 'Lentes, armação, hastes e vedação lateral.',
+    reprovacao: 'Lente riscada ou embaçada que prejudique a visão, trincas ou haste quebrada.' }
+};
+
+// EPIs com número de CA (obrig = exigido para liberar; soSe = só quando o produto exige o item)
+const CA_BASE = [
+  { id: 'vestimenta', nome: 'Vestimenta', obrig: true },
+  { id: 'luvas', nome: 'Luvas', obrig: true },
+  { id: 'botas', nome: 'Botas', obrig: true },
+  { id: 'mascara', nome: 'Respirador/Máscara', obrig: true },
+  { id: 'perneiras', nome: 'Perneiras (se usar)', obrig: false },
+  { id: 'oculos', nome: 'Óculos', obrig: true, soSe: 'oculos' }
+];
+
+/* Produtos (iscas) e o que a bula pede. Baseado nas bulas consultadas em 11/2026.
+   Para incluir ou alterar um produto, edite esta lista.
+   extras: itens adicionais no checklist; ordem: ordem de vestir; obs: observação da bula. */
+const PRODUTOS = [
+  { id: 'sulfluramida', nome: 'Isca granulada à base de sulfluramida (padrão)', extras: [],
+    ordem: 'calça → camisa de manga longa → botas → máscara → luvas', obs: '' },
+  { id: 'dinagro', nome: 'Isca Formicida Dinagro-S', extras: [],
+    ordem: 'calça comprida → camisa de manga comprida → botas → máscara descartável → luvas de borracha', obs: '' },
+  { id: 'attamex', nome: 'Isca Formicida Atta Mex-S', extras: [],
+    ordem: '', obs: 'Máscara descartável cobrindo nariz e boca. Aplicar direto da embalagem, sem contato manual com a isca.' },
+  { id: 'graoverde', nome: 'Grão Verde AG', extras: ['oculos'],
+    ordem: 'macacão → botas → máscara → óculos → luvas', obs: 'A bula pede macacão e óculos de proteção.' },
+  { id: 'outro', nome: 'Outro produto (seguir a bula)', extras: [],
+    ordem: '', obs: 'Confira na bula os EPIs exigidos. Se ela pedir óculos, escolha a opção abaixo.' },
+  { id: 'outro_oculos', nome: 'Outro produto que exige óculos (seguir a bula)', extras: ['oculos'],
+    ordem: '', obs: 'Confira na bula os demais EPIs exigidos.' }
+];
+
+function produtoDe(s) { return PRODUTOS.find(p => p.id === s.produto) || null; }
+
+// Checklist do início de turno conforme o produto escolhido (extras entram antes do item CA)
+function itensInicio(s) {
+  const p = produtoDe(s);
+  const extras = p ? p.extras.map(e => ITENS_EXTRAS[e]) : [];
+  const base = ITENS_INICIO.filter(i => i.id !== 'ca');
+  return base.concat(extras, ITENS_INICIO.filter(i => i.id === 'ca'));
+}
+
+function caItens(s) {
+  const p = produtoDe(s);
+  const extras = p ? p.extras : [];
+  return CA_BASE.filter(c => !c.soSe || extras.includes(c.soSe));
+}
+
+/* Registro automático numa planilha Google (opcional).
+   Deixe PLANILHA_URL vazio para desligar. Veja o arquivo do Apps Script para configurar. */
+const PLANILHA_URL = 'https://script.google.com/macros/s/AKfycbzlIHgeAdY5oNEjF7v-OkYfpkqYcl59Wt7zPmiWsIHO6T6xx3QA-hOeCgGSblOKS8mw/exec';
+const PLANILHA_TOKEN = 'cgs-gnkVQyenPHVa9Q2X';
+
 const ITENS_FIM = [
   { id: 'passo1', titulo: '1. Enxágue e lavagem das roupas:',
     texto: 'Lave a calça e a camisa em água corrente abundante com sabão neutro (sabão de coco). Nunca use alvejantes, cloro ou sabão em pó comum, pois esses produtos destroem o tratamento hidrorrepelente do tecido.' },
@@ -375,14 +554,20 @@ const ITENS_FIM = [
     texto: 'Guarde os EPIs limpos e secos em armário fechado, exclusivo para esse fim, longe de alimentos, medicamentos e das próprias embalagens de defensivos.' }
 ];
 
-/* ---------- Utilidades ---------- */
-function getTodayISO() {
-  const d = new Date();
+/* =====================================================================
+   UTILIDADES
+   ===================================================================== */
+function isoDate(d) {
   return `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, '0')}-${String(d.getDate()).padStart(2, '0')}`;
 }
+function getTodayISO() { return isoDate(new Date()); }
+const keyToBR = k => k.slice(0, 10).split('-').reverse().join('/');   // 2026-11-18#2 -> 18/11/2026
+const recDay = k => k.slice(0, 10);
+const recSeq = k => (k.includes('#') ? Number(k.split('#')[1]) : 1);
+function horaAgora() { return new Date().toLocaleTimeString('pt-BR', { hour: '2-digit', minute: '2-digit' }); }
 
 function escapeHtml(str) {
-  return String(str).replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
+  return String(str == null ? '' : str).replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
 }
 
 let toastTimer = null;
@@ -394,88 +579,346 @@ function toast(msg, ms = 3500) {
   toastTimer = setTimeout(() => el.classList.remove('show'), ms);
 }
 
-function emptyState() {
-  return { operador: '', talhao: '', checksInicio: {}, checksFim: {}, photos: {}, enviado: {} };
+function dataUrlToBlob(dataUrl) {
+  const [meta, b64] = dataUrl.split(',');
+  const mime = (meta.match(/:(.*?);/) || [])[1] || 'image/jpeg';
+  const bin = atob(b64);
+  const arr = new Uint8Array(bin.length);
+  for (let i = 0; i < bin.length; i++) arr[i] = bin.charCodeAt(i);
+  return new Blob([arr], { type: mime });
+}
+function blobToDataUrl(blob) {
+  return new Promise((res, rej) => { const r = new FileReader(); r.onload = () => res(r.result); r.onerror = rej; r.readAsDataURL(blob); });
+}
+function canvasToBlob(canvas, type, q) {
+  return new Promise(res => canvas.toBlob(b => res(b || dataUrlToBlob(canvas.toDataURL(type, q))), type, q));
 }
 
-/* ---------- Armazenamento local (com proteção contra falhas) ---------- */
-let todayKey = getTodayISO();
-
-function loadState() {
-  try {
-    const raw = localStorage.getItem(STORAGE_PREFIX + todayKey);
-    const s = raw ? JSON.parse(raw) : null;
-    return Object.assign(emptyState(), s || {});
-  } catch (e) {
-    return emptyState();
+/* =====================================================================
+   FOTOS E ASSINATURAS NO INDEXEDDB (muito mais espaço que o localStorage)
+   Chave: "<registro>/<nome>", ex.: "2026-11-18#2/fotoEpi"
+   ===================================================================== */
+const media = (() => {
+  let dbp = null;
+  function db() {
+    if (!dbp) {
+      dbp = new Promise((res, rej) => {
+        if (!('indexedDB' in window)) return rej(new Error('sem IndexedDB'));
+        const r = indexedDB.open('cgs_epi_media', 1);
+        r.onupgradeneeded = () => r.result.createObjectStore('m');
+        r.onsuccess = () => res(r.result);
+        r.onerror = () => rej(r.error);
+      });
+    }
+    return dbp;
   }
+  async function run(mode, fn) {
+    const d = await db();
+    return new Promise((res, rej) => {
+      const t = d.transaction('m', mode);
+      const req = fn(t.objectStore('m'));
+      t.oncomplete = () => res(req ? req.result : undefined);
+      t.onerror = () => rej(t.error);
+      t.onabort = () => rej(t.error);
+    });
+  }
+  return {
+    put: (k, v) => run('readwrite', s => s.put(v, k)),
+    get: k => run('readonly', s => s.get(k)),
+    del: k => run('readwrite', s => s.delete(k)),
+    delRecord: rk => run('readwrite', s => s.delete(IDBKeyRange.bound(rk + '/', rk + '/￿')))
+  };
+})();
+
+// Cache em memória do registro aberto: { nome: { blob, url } }
+let mediaCache = {};
+let mediaToken = 0;
+
+function clearMediaCache() {
+  Object.values(mediaCache).forEach(m => URL.revokeObjectURL(m.url));
+  mediaCache = {};
 }
 
-function cleanupOldDays() {
+function cacheBlob(name, blob) {
+  if (mediaCache[name]) URL.revokeObjectURL(mediaCache[name].url);
+  mediaCache[name] = { blob, url: URL.createObjectURL(blob) };
+}
+
+async function loadBlob(rk, s, name) {
   try {
-    const limite = new Date();
-    limite.setDate(limite.getDate() - DIAS_HISTORICO);
-    const limiteISO = `${limite.getFullYear()}-${String(limite.getMonth() + 1).padStart(2, '0')}-${String(limite.getDate()).padStart(2, '0')}`;
-    for (let i = localStorage.length - 1; i >= 0; i--) {
+    const b = await media.get(rk + '/' + name);
+    if (b) return b;
+  } catch (e) { /* sem IndexedDB */ }
+  if (s.mediaFallback && s.mediaFallback[name]) return dataUrlToBlob(s.mediaFallback[name]);
+  return null;
+}
+
+async function saveMedia(name, blob) {
+  try {
+    await media.put(viewKey + '/' + name, blob);
+    if (state.mediaFallback) delete state.mediaFallback[name];
+  } catch (e) {
+    // Sem IndexedDB (ex.: navegação privada): guarda junto do registro
+    state.mediaFallback = state.mediaFallback || {};
+    state.mediaFallback[name] = await blobToDataUrl(blob);
+  }
+  cacheBlob(name, blob);
+}
+
+async function deleteMedia(name) {
+  try { await media.del(viewKey + '/' + name); } catch (e) {}
+  if (state.mediaFallback) delete state.mediaFallback[name];
+  if (mediaCache[name]) { URL.revokeObjectURL(mediaCache[name].url); delete mediaCache[name]; }
+}
+
+/* =====================================================================
+   REGISTROS (localStorage, só texto: pequeno e rápido)
+   ===================================================================== */
+function emptyState() {
+  return { operador: '', talhao: '', inspetor: '', produto: '', cas: {}, checksInicio: {}, checksFim: {},
+           photos: {}, assinaturas: {}, enviado: {}, ocorrencias: {}, sinc: {} };
+}
+
+function readProfile() {
+  try { return JSON.parse(localStorage.getItem(KEY_PERFIL)) || {}; } catch (e) { return {}; }
+}
+function writeProfile() {
+  try {
+    localStorage.setItem(KEY_PERFIL, JSON.stringify({
+      operador: state.operador, talhao: state.talhao, inspetor: state.inspetor, produto: state.produto, cas: state.cas
+    }));
+  } catch (e) {}
+}
+
+// Novo registro já preenchido com os últimos valores usados
+function newRecordState(comOperador) {
+  const p = readProfile();
+  const s = emptyState();
+  s.talhao = p.talhao || '';
+  s.inspetor = p.inspetor || '';
+  s.produto = p.produto || '';
+  if (comOperador) { s.operador = p.operador || ''; s.cas = Object.assign({}, p.cas || {}); }
+  return s;
+}
+
+function readRecord(k) {
+  try {
+    const raw = localStorage.getItem(REC_PREFIX + k);
+    return raw ? Object.assign(emptyState(), JSON.parse(raw)) : null;
+  } catch (e) { return null; }
+}
+function writeRecord(k, s) { localStorage.setItem(REC_PREFIX + k, JSON.stringify(s)); }
+
+function recordKeys() {
+  const out = [];
+  try {
+    for (let i = 0; i < localStorage.length; i++) {
       const k = localStorage.key(i);
-      if (k && k.startsWith(STORAGE_PREFIX) && k.slice(STORAGE_PREFIX.length) < limiteISO) {
-        localStorage.removeItem(k);
+      if (k && k.startsWith(REC_PREFIX)) {
+        const rk = k.slice(REC_PREFIX.length);
+        if (/^\d{4}-\d{2}-\d{2}(#\d+)?$/.test(rk)) out.push(rk);
       }
     }
-  } catch (e) { /* armazenamento indisponível */ }
+  } catch (e) {}
+  return out.sort((a, b) => (recDay(a) === recDay(b) ? recSeq(a) - recSeq(b) : (recDay(a) < recDay(b) ? -1 : 1)));
 }
+
+function removeRecord(k) {
+  try { localStorage.removeItem(REC_PREFIX + k); } catch (e) {}
+  media.delRecord(k).catch(() => {});
+}
+
+/* ---------- Estado da tela ----------
+   currentKey = registro em edição (o de hoje)
+   viewKey    = registro mostrado na tela (o atual, ou um antigo aberto pelo histórico/aviso) */
+let currentKey = getTodayISO();
+let viewKey = currentKey;
+let state = emptyState();
+
+function isReadOnly() { return viewKey !== currentKey; }
+
+function setCurrent(k) {
+  currentKey = k;
+  try { localStorage.setItem(KEY_ATUAL, k); } catch (e) {}
+}
+
+function loadRecord(k) {
+  return readRecord(k) || (k === currentKey ? newRecordState(!k.includes('#')) : emptyState());
+}
+
+/* ---------- O que falta para cada relatório ---------- */
+function caValido(v) { return /^\d{3,6}$/.test((v || '').trim()); }
+
+function faltas(s, tipo, semAssinatura) {
+  const f = [];
+  if (!(s.operador || '').trim() || !(s.talhao || '').trim()) f.push('identificação');
+  if (tipo === 'inicio') {
+    if (!(s.inspetor || '').trim()) f.push('responsável pela inspeção');
+    if (!produtoDe(s)) f.push('produto (isca)');
+    const vals = itensInicio(s).map(i => s.checksInicio[i.id]);
+    if (vals.includes('NOK')) f.push('item NÃO OK');
+    const pend = vals.filter(v => !v).length;
+    if (pend) f.push(`${pend} item(ns) sem avaliação`);
+    const caFalta = caItens(s).filter(c => c.obrig && !caValido(s.cas[c.id])).length;
+    if (caFalta) f.push(`${caFalta} nº de CA`);
+    const fotos = ['fotoEpi', 'fotoDosador'].filter(k => !s.photos[k]).length;
+    if (fotos) f.push(`${fotos} foto(s)`);
+  } else {
+    const vals = ITENS_FIM.map(i => s.checksFim[i.id]);
+    const nok = vals.filter(v => v === 'NOK').length;
+    const pend = vals.filter(v => !v).length;
+    if (nok) f.push(`${nok} passo(s) NÃO OK`);
+    if (pend) f.push(`${pend} passo(s) sem confirmação`);
+    if (!s.photos.fotoLimpeza) f.push('1 foto');
+  }
+  if (!semAssinatura && !(s.assinaturas || {})[tipo]) f.push('assinatura');
+  return f;
+}
+
+function isReady(s, tipo) { return faltas(s, tipo).length === 0; }
+function hasUnsent(s) { return ['inicio', 'fim'].some(t => isReady(s, t) && !s.enviado[t]); }
+
+function listPending() {
+  const out = [];
+  recordKeys().forEach(k => {
+    if (k === currentKey) return;
+    const s = readRecord(k);
+    if (!s) return;
+    ['inicio', 'fim'].forEach(t => { if (isReady(s, t) && !s.enviado[t]) out.push({ key: k, tipo: t, operador: s.operador }); });
+  });
+  return out;
+}
+
+// Apaga registros com mais de DIAS_HISTORICO dias
+function cleanupOld() {
+  const lim = new Date();
+  lim.setDate(lim.getDate() - DIAS_HISTORICO);
+  const limISO = isoDate(lim);
+  recordKeys().forEach(k => { if (recDay(k) < limISO && k !== currentKey && k !== viewKey) removeRecord(k); });
+}
+
+/* ---------- Gravação ---------- */
+let saveTimer = null;
 
 function persist() {
-  try {
-    localStorage.setItem(STORAGE_PREFIX + todayKey, JSON.stringify(state));
-    return true;
-  } catch (e) {
-    // Provável cota cheia: remove dias anteriores e tenta de novo
+  clearTimeout(saveTimer);
+  saveTimer = null;
+  if (isReadOnly() && !persistAllowedInReadOnly) return true;
+  for (let tentativa = 0; tentativa < 2; tentativa++) {
     try {
-      for (let i = localStorage.length - 1; i >= 0; i--) {
-        const k = localStorage.key(i);
-        if (k && k.startsWith(STORAGE_PREFIX) && k !== STORAGE_PREFIX + todayKey) localStorage.removeItem(k);
-      }
-      localStorage.setItem(STORAGE_PREFIX + todayKey, JSON.stringify(state));
+      writeRecord(viewKey, state);
+      if (!isReadOnly()) writeProfile();
       return true;
-    } catch (e2) {
-      toast('⚠️ Memória do navegador cheia: os dados NÃO foram salvos. Não feche esta página antes de enviar.', 6000);
-      return false;
+    } catch (e) {
+      // Memória cheia: apaga o registro mais antigo já enviado e tenta de novo
+      const velho = recordKeys().find(k => k !== viewKey && k !== currentKey && !hasUnsent(readRecord(k) || emptyState()));
+      if (!velho) break;
+      removeRecord(velho);
     }
+  }
+  toast('⚠️ Memória do navegador cheia: os dados NÃO foram salvos. Envie os relatórios pendentes.', 6000);
+  return false;
+}
+let persistAllowedInReadOnly = false;   // usado só para gravar "enviado" num registro antigo
+
+function scheduleSave() { clearTimeout(saveTimer); saveTimer = setTimeout(persist, 700); }
+function flushSave() { if (saveTimer) persist(); }
+
+// Migra fotos de versões antigas (guardadas como texto no localStorage) para o IndexedDB
+async function migrateOldPhotos() {
+  for (const k of recordKeys()) {
+    const s = readRecord(k);
+    if (!s) continue;
+    let mudou = false;
+    for (const pk of PHOTO_KEYS) {
+      const p = s.photos[pk];
+      if (p && p.dataUrl) {
+        try { await media.put(k + '/' + pk, dataUrlToBlob(p.dataUrl)); }
+        catch (e) { s.mediaFallback = s.mediaFallback || {}; s.mediaFallback[pk] = p.dataUrl; }
+        delete p.dataUrl;
+        mudou = true;
+      }
+    }
+    if (mudou) { try { writeRecord(k, s); } catch (e) {} }
   }
 }
 
-let state = loadState();
+/* =====================================================================
+   GPS (funciona sem internet: usa o receptor GPS do celular)
+   ===================================================================== */
+let lastFix = null;
 
-/* ---------- Inicialização ---------- */
-function init() {
-  cleanupOldDays();
-  const hojeFormatado = new Date().toLocaleDateString('pt-BR', {
-    weekday: 'long', day: '2-digit', month: '2-digit', year: 'numeric'
+function fixFromPos(p) {
+  return { lat: p.coords.latitude, lon: p.coords.longitude, acc: p.coords.accuracy, t: p.timestamp || Date.now() };
+}
+
+// Chamado ao tocar em "Tirar foto": já começa a buscar a posição enquanto a câmera abre
+function warmGps() {
+  if (!('geolocation' in navigator)) return;
+  try {
+    navigator.geolocation.getCurrentPosition(p => { lastFix = fixFromPos(p); }, () => {},
+      { enableHighAccuracy: true, timeout: 30000, maximumAge: GPS_IDADE_MAX_MS });
+  } catch (e) {}
+}
+
+function getFix() {
+  if (lastFix && Date.now() - lastFix.t < GPS_IDADE_MAX_MS) return Promise.resolve(lastFix);
+  if (!('geolocation' in navigator)) return Promise.resolve(null);
+  return new Promise(res => {
+    const timer = setTimeout(() => res(lastFix && Date.now() - lastFix.t < 15 * 60000 ? lastFix : null), GPS_ESPERA_MS);
+    try {
+      navigator.geolocation.getCurrentPosition(
+        p => { clearTimeout(timer); lastFix = fixFromPos(p); res(lastFix); },
+        () => { clearTimeout(timer); res(null); },
+        { enableHighAccuracy: true, timeout: GPS_ESPERA_MS, maximumAge: GPS_IDADE_MAX_MS });
+    } catch (e) { clearTimeout(timer); res(null); }
   });
-  document.getElementById('dateDisplay').textContent = '📅 Data: ' + hojeFormatado;
-  document.getElementById('operador').value = state.operador || '';
-  document.getElementById('talhao').value = state.talhao || '';
-  renderInicioTable();
-  renderFimList();
-  PHOTO_KEYS.forEach(key => {
-    if (state.photos[key]) renderPhotoPreview(key, state.photos[key]);
-  });
+}
+
+function fmtGps(g) { return g ? `${g.lat.toFixed(5)}, ${g.lon.toFixed(5)} (±${Math.round(g.acc)} m)` : 'não disponível'; }
+function mapsLink(g) { return `https://maps.google.com/?q=${g.lat.toFixed(6)},${g.lon.toFixed(6)}`; }
+
+/* =====================================================================
+   INICIALIZAÇÃO E NAVEGAÇÃO
+   ===================================================================== */
+let tabAtual = 'inicio';
+
+async function init() {
+  document.getElementById('histDias').textContent = DIAS_HISTORICO;
+  const hoje = getTodayISO();
+  let salvo = null;
+  try { salvo = localStorage.getItem(KEY_ATUAL); } catch (e) {}
+  setCurrent(salvo && recDay(salvo) === hoje ? salvo : hoje);
+  viewKey = currentKey;
+
+  await migrateOldPhotos();
+  cleanupOld();
+  state = loadRecord(viewKey);
+  renderAll();
+
   updateNetworkStatus();
-  window.addEventListener('online', updateNetworkStatus);
+  window.addEventListener('online', () => { updateNetworkStatus(); processQueue(); });
   window.addEventListener('offline', updateNetworkStatus);
-
-  // Se a página ficar aberta e virar o dia, recarrega para começar um registro novo
+  window.addEventListener('pagehide', flushSave);
+  setTimeout(processQueue, 3000);
+  window.addEventListener('resize', () => { sizeSigPad('inicio'); sizeSigPad('fim'); });
   document.addEventListener('visibilitychange', () => {
-    if (!document.hidden && getTodayISO() !== todayKey) location.reload();
+    if (document.hidden) { flushSave(); return; }
+    processQueue();
+    // Virou o dia com o app aberto: começa o registro do dia novo.
+    // O de ontem, se tiver relatório não enviado, aparece no aviso amarelo.
+    const h = getTodayISO();
+    if (recDay(currentKey) < h) {
+      const estavaNoAtual = !isReadOnly();
+      setCurrent(h);
+      if (estavaNoAtual) openRecord(h); else renderBanners();
+    }
   });
 
-  // Botão "Compartilhar" só aparece se o aparelho suporta enviar arquivos
   if (canShareFiles()) {
-    document.getElementById('btnShareInicio').classList.remove('hidden');
-    document.getElementById('btnShareFim').classList.remove('hidden');
+    document.getElementById('btnShare-inicio').classList.remove('hidden');
+    document.getElementById('btnShare-fim').classList.remove('hidden');
   }
-  validateAll();
 }
 
 function updateNetworkStatus() {
@@ -491,17 +934,103 @@ function updateNetworkStatus() {
 }
 
 function switchTab(tab) {
-  const isInicio = tab === 'inicio';
-  document.getElementById('btnTabInicio').classList.toggle('active', isInicio);
-  document.getElementById('btnTabFim').classList.toggle('active', !isInicio);
-  document.getElementById('btnTabInicio').setAttribute('aria-selected', isInicio);
-  document.getElementById('btnTabFim').setAttribute('aria-selected', !isInicio);
-  document.getElementById('tab-inicio').classList.toggle('hidden', !isInicio);
-  document.getElementById('tab-fim').classList.toggle('hidden', isInicio);
+  tabAtual = tab;
+  ['inicio', 'fim', 'hist'].forEach(t => {
+    const b = document.getElementById('btnTab-' + t);
+    b.classList.toggle('active', t === tab);
+    b.setAttribute('aria-selected', t === tab);
+    document.getElementById('tab-' + t).classList.toggle('hidden', t !== tab);
+  });
+  document.getElementById('card-ident').classList.toggle('hidden', tab === 'hist');
+  if (tab === 'hist') renderHistory();
+  else sizeSigPad(tab);
   window.scrollTo({ top: 0, behavior: 'smooth' });
 }
 
-/* ---------- Renderização dos checklists ---------- */
+function openRecord(k, tab) {
+  flushSave();
+  viewKey = k;
+  state = loadRecord(k);
+  renderAll();
+  switchTab(tab || (tabAtual === 'hist' ? 'inicio' : tabAtual));
+}
+
+function renderAll() {
+  const ro = isReadOnly();
+  document.body.classList.toggle('readonly', ro);
+  const d = new Date(recDay(viewKey) + 'T12:00:00');
+  const dataFmt = d.toLocaleDateString('pt-BR', { weekday: 'long', day: '2-digit', month: '2-digit', year: 'numeric' });
+  const seq = recSeq(viewKey) > 1 ? ` · inspeção nº ${recSeq(viewKey)}` : '';
+  document.getElementById('dateDisplay').textContent = (ro ? '🗂️ Registro de: ' : '📅 Data: ') + dataFmt + seq;
+
+  ['operador', 'talhao', 'inspetor'].forEach(id => {
+    const el = document.getElementById(id);
+    el.value = state[id] || '';
+    el.readOnly = ro;
+  });
+  renderProduto();
+  renderCaGrid();
+  pdfCache = null;
+
+  clearMediaCache();
+  PHOTO_KEYS.forEach(k => {
+    const box = document.getElementById('box-' + k);
+    box.classList.toggle('done', !!state.photos[k]);
+    box.querySelector('.cam-label').textContent = state.photos[k] ? '🔁 Tirar Outra Foto' : '📷 Tirar Foto Agora';
+    box.querySelector('.camera-btn').classList.toggle('hidden', ro);
+    document.getElementById('preview-' + k).innerHTML = state.photos[k] ? '<div class="photo-wait">Carregando foto...</div>' : '';
+  });
+  document.getElementById('btnNew').classList.toggle('hidden', ro);
+
+  renderInicioTable();
+  renderFimList();
+  renderSig('inicio');
+  renderSig('fim');
+  renderBanners();
+  validateAll();
+  if (tabAtual === 'hist') renderHistory();
+  loadMediaForView();
+}
+
+// Carrega fotos e assinaturas do registro aberto (assíncrono)
+async function loadMediaForView() {
+  const tok = ++mediaToken;
+  const rk = viewKey, s = state;
+  for (const name of MEDIA_NAMES) {
+    const tem = name.startsWith('sig_') ? s.assinaturas[name.slice(4)] : s.photos[name];
+    if (!tem) continue;
+    const blob = await loadBlob(rk, s, name);
+    if (tok !== mediaToken) return;              // usuário abriu outro registro
+    if (!blob) continue;
+    cacheBlob(name, blob);
+    if (name.startsWith('sig_')) renderSig(name.slice(4)); else renderPhotoPreview(name);
+  }
+  PHOTO_KEYS.forEach(k => { if (s.photos[k] && !mediaCache[k]) renderPhotoPreview(k); });
+}
+
+function renderBanners() {
+  let html = '';
+  if (isReadOnly()) {
+    html += `<div class="day-banner past">
+      <div>🗂️ Você está vendo o registro de <strong>${keyToBR(viewKey)}</strong>${state.operador ? ' — ' + escapeHtml(state.operador) : ''}. Ele não pode ser alterado, só enviado.</div>
+      <button type="button" class="banner-btn" onclick="openRecord(currentKey)">⬅️ Voltar para a inspeção atual</button>
+    </div>`;
+  }
+  const pend = listPending();
+  pend.filter(p => p.key !== viewKey).forEach(p => {
+    const nome = p.tipo === 'inicio' ? 'Inspeção de início de turno' : 'Higienização pós-jornada';
+    html += `<div class="day-banner pending">
+      <div>⚠️ <strong>${nome}</strong> de ${keyToBR(p.key)}${p.operador ? ' (' + escapeHtml(p.operador) + ')' : ''} ainda <strong>não foi enviada</strong>.</div>
+      <button type="button" class="banner-btn" onclick="openRecord('${p.key}', '${p.tipo}')">📤 Abrir e enviar</button>
+    </div>`;
+  });
+  document.getElementById('banners').innerHTML = html;
+  document.getElementById('badge-hist').textContent = pend.length ? '⚠️' : '';
+}
+
+/* =====================================================================
+   CHECKLISTS E CAMPOS
+   ===================================================================== */
 function radioButtons(group, id, val) {
   return `
     <div class="radio-group" role="group" aria-label="Avaliação">
@@ -512,10 +1041,19 @@ function radioButtons(group, id, val) {
     </div>`;
 }
 
+function ocorrenciaTexto(o) {
+  return o.trocado ? `reprovado às ${o.reprovado} → EPI trocado às ${o.trocado}` : `reprovado às ${o.reprovado} (aguardando troca)`;
+}
+function ocorrenciaHtml(id) {
+  const lista = state.ocorrencias[id];
+  if (!lista || !lista.length) return '';
+  return lista.map(o => `<div class="ocorrencia ${o.trocado ? 'ok' : ''}">🔁 ${escapeHtml(ocorrenciaTexto(o))}</div>`).join('');
+}
+
 function renderInicioTable() {
   const tbody = document.getElementById('checklist-body');
   tbody.innerHTML = '';
-  ITENS_INICIO.forEach(item => {
+  itensInicio(state).forEach(item => {
     const val = state.checksInicio[item.id];
     const tr = document.createElement('tr');
     if (val === 'NOK') tr.className = 'row-nok';
@@ -523,7 +1061,7 @@ function renderInicioTable() {
       <td class="col-equip">${escapeHtml(item.equip)}</td>
       <td class="col-insp">${escapeHtml(item.inspecionar)}</td>
       <td class="col-reprova">${escapeHtml(item.reprovacao)}</td>
-      <td class="col-status">${radioButtons('checksInicio', item.id, val)}</td>`;
+      <td class="col-status">${radioButtons('checksInicio', item.id, val)}${ocorrenciaHtml(item.id)}</td>`;
     tbody.appendChild(tr);
   });
 }
@@ -542,259 +1080,551 @@ function renderFimList() {
   });
 }
 
-function setCheck(group, id, value) {
-  state[group][id] = value;
-  saveState();
-  if (group === 'checksInicio') renderInicioTable();
-  if (group === 'checksFim') renderFimList();
+function renderCaGrid() {
+  const ro = isReadOnly();
+  document.getElementById('ca-grid').innerHTML = caItens(state).map(c => `
+    <div>
+      <label for="ca-${c.id}">${escapeHtml(c.nome)}${c.obrig ? ' *' : ''}</label>
+      <input type="text" id="ca-${c.id}" data-ca="${c.id}" inputmode="numeric" maxlength="6" placeholder="Nº CA"
+        value="${escapeHtml(state.cas[c.id] || '')}" ${ro ? 'readonly' : ''} oninput="onCaInput(this)" onblur="flushSave()">
+    </div>`).join('');
 }
 
-/* ---------- Fotos ---------- */
-function processPhoto(event, photoKey) {
+// Qualquer alteração depois de assinar invalida a assinatura e o envio daquele relatório
+function invalidate(tipo) {
+  delete state.enviado[tipo];
+  if (state.sinc) delete state.sinc[tipo];
+  pdfCache = null;
+  if (state.assinaturas[tipo]) {
+    delete state.assinaturas[tipo];
+    deleteMedia('sig_' + tipo);
+    renderSig(tipo);
+    toast('✍️ Assinatura removida porque houve alteração. Assine novamente no final.', 4500);
+  }
+}
+
+function onFieldInput(el) {
+  if (isReadOnly()) return;
+  const campo = el.dataset.field;
+  state[campo] = el.value;
+  if (campo === 'inspetor') invalidate('inicio'); else { invalidate('inicio'); invalidate('fim'); }
+  scheduleSave();
+  validateAll();
+}
+
+function renderProduto() {
+  const sel = document.getElementById('produto');
+  if (!sel.options.length) {
+    sel.innerHTML = '<option value="">— Selecione o produto —</option>' +
+      PRODUTOS.map(p => `<option value="${p.id}">${escapeHtml(p.nome)}</option>`).join('');
+  }
+  sel.value = state.produto || '';
+  sel.disabled = isReadOnly();
+  sel.classList.toggle('invalid', !state.produto && hasAnyProgress());
+  const p = produtoDe(state);
+  const info = document.getElementById('produto-info');
+  if (!p) { info.innerHTML = ''; info.classList.add('hidden'); return; }
+  let h = '';
+  if (p.ordem) h += `<div>👕 <strong>Ordem para vestir:</strong> ${escapeHtml(p.ordem)}</div>`;
+  if (p.obs) h += `<div>📌 ${escapeHtml(p.obs)}</div>`;
+  if (p.extras.length) h += `<div>➕ Itens adicionados ao checklist: <strong>${p.extras.map(e => escapeHtml(ITENS_EXTRAS[e].equip)).join(', ')}</strong></div>`;
+  h += '<div class="hint">Sempre confirme os EPIs na bula da embalagem que está usando.</div>';
+  info.innerHTML = h;
+  info.classList.remove('hidden');
+}
+
+function onProdutoChange(el) {
+  if (isReadOnly()) return;
+  state.produto = el.value;
+  invalidate('inicio');
+  persist();
+  renderProduto();
+  renderInicioTable();
+  renderCaGrid();
+  validateAll();
+}
+
+function onCaInput(el) {
+  if (isReadOnly()) return;
+  el.value = el.value.replace(/\D/g, '');
+  state.cas[el.dataset.ca] = el.value;
+  invalidate('inicio');
+  scheduleSave();
+  validateAll();
+}
+
+function setCheck(group, id, value) {
+  if (isReadOnly()) { toast('Registro antigo: não pode ser alterado.'); return; }
+  const anterior = state[group][id];
+  if (anterior === value) return;
+
+  // Ação corretiva: guarda quando um EPI foi reprovado e quando foi trocado
+  if (group === 'checksInicio') {
+    const lista = state.ocorrencias[id] || (state.ocorrencias[id] = []);
+    const ultima = lista[lista.length - 1];
+    if (value === 'NOK') {
+      lista.push({ reprovado: horaAgora(), ts: Date.now(), trocado: null });
+    } else if (anterior === 'NOK' && ultima && !ultima.trocado) {
+      if (Date.now() - ultima.ts < DESFAZER_SEG * 1000) {
+        lista.pop();                       // foi toque errado
+      } else {
+        ultima.trocado = horaAgora();
+        toast(`🔁 Troca registrada: reprovado às ${ultima.reprovado}, trocado às ${ultima.trocado}.`, 4500);
+      }
+    }
+    if (!lista.length) delete state.ocorrencias[id];
+    invalidate('inicio');
+  } else {
+    invalidate('fim');
+  }
+
+  state[group][id] = value;
+  persist();
+  if (group === 'checksInicio') renderInicioTable(); else renderFimList();
+  validateAll();
+}
+
+/* =====================================================================
+   FOTOS (carimbo com data, hora, operador, local e GPS)
+   ===================================================================== */
+async function processPhoto(event, photoKey) {
   const input = event.target;
   const file = input.files && input.files[0];
-  input.value = ''; // permite tirar outra foto logo em seguida
+  input.value = '';
   if (!file) return;
+  if (isReadOnly()) { toast('Registro antigo: não pode ser alterado.'); return; }
 
   const prev = document.getElementById('preview-' + photoKey);
-  const showError = msg => {
-    const old = prev.querySelector('.photo-error');
-    if (old) old.remove();
+  const showMsg = (msg, cls) => {
+    prev.querySelectorAll('.photo-error, .photo-wait').forEach(e => e.remove());
+    if (!msg) return;
     const p = document.createElement('div');
-    p.className = 'photo-error';
+    p.className = cls || 'photo-error';
     p.textContent = msg;
     prev.appendChild(p);
   };
 
-  // Exige identificação antes da foto (senão o carimbo sai "não informado")
-  const op = document.getElementById('operador').value.trim();
-  const tl = document.getElementById('talhao').value.trim();
+  const op = state.operador.trim();
+  const tl = state.talhao.trim();
   if (!op || !tl) {
-    showError('⚠️ Preencha o nome do operador e o talhão ANTES de tirar a foto.');
+    showMsg('⚠️ Preencha o nome do operador e o talhão ANTES de tirar a foto.');
     document.getElementById(!op ? 'operador' : 'talhao').focus();
     return;
   }
-
-  // Bloqueio de foto antiga: arquivos da galeria mantêm a data original
   const idadeMin = (Date.now() - file.lastModified) / 60000;
   if (file.lastModified && idadeMin > IDADE_MAX_FOTO_MIN) {
-    showError(`⚠️ Foto recusada: parece ser antiga (de ${new Date(file.lastModified).toLocaleString('pt-BR')}). Use a câmera agora.`);
+    showMsg(`⚠️ Foto recusada: parece ser antiga (de ${new Date(file.lastModified).toLocaleString('pt-BR')}). Use a câmera agora.`);
     return;
   }
-  if (!file.type.startsWith('image/')) {
-    showError('⚠️ O arquivo escolhido não é uma imagem.');
-    return;
-  }
+  if (!file.type.startsWith('image/')) { showMsg('⚠️ O arquivo escolhido não é uma imagem.'); return; }
 
+  const rk = viewKey;
+  const now = new Date();
+  const timestamp = now.toLocaleDateString('pt-BR') + ' ' + now.toLocaleTimeString('pt-BR');
+  showMsg('📍 Obtendo localização GPS...', 'photo-wait');
+  const gps = await getFix();
+
+  let img;
   const url = URL.createObjectURL(file);
-  const img = new Image();
-  img.onload = function () {
-    const canvas = document.getElementById('stampCanvas');
-    const ctx = canvas.getContext('2d');
-    const maxW = 1024;
-    const scale = Math.min(1, maxW / img.width);
-    canvas.width = Math.round(img.width * scale);
-    canvas.height = Math.round(img.height * scale);
-    ctx.drawImage(img, 0, 0, canvas.width, canvas.height);
+  try {
+    img = await new Promise((res, rej) => { const i = new Image(); i.onload = () => res(i); i.onerror = rej; i.src = url; });
+  } catch (e) {
     URL.revokeObjectURL(url);
+    showMsg('⚠️ Não foi possível ler esta imagem. Tente novamente.');
+    return;
+  }
+  const canvas = document.getElementById('stampCanvas');
+  const ctx = canvas.getContext('2d');
+  const scale = Math.min(1, 1024 / img.width);
+  canvas.width = Math.round(img.width * scale);
+  canvas.height = Math.round(img.height * scale);
+  ctx.drawImage(img, 0, 0, canvas.width, canvas.height);
+  URL.revokeObjectURL(url);
 
-    const now = new Date();
-    const timestamp = now.toLocaleDateString('pt-BR') + ' ' + now.toLocaleTimeString('pt-BR');
+  // Carimbo proporcional ao tamanho da imagem (4 linhas)
+  const fs = Math.max(13, Math.round(canvas.width / 45));
+  const lh = Math.round(fs * 1.45);
+  const barH = lh * 4 + Math.round(fs * 0.8);
+  const pad = Math.round(fs * 0.8);
+  const maxW = canvas.width - pad * 2;
+  const y0 = canvas.height - barH;
+  ctx.fillStyle = 'rgba(0, 0, 0, 0.75)';
+  ctx.fillRect(0, y0, canvas.width, barH);
+  ctx.fillStyle = '#00e676';
+  ctx.font = `bold ${fs}px sans-serif`;
+  ctx.fillText('CGS FLORESTAL | DATA/HORA: ' + timestamp, pad, y0 + lh, maxW);
+  ctx.fillStyle = '#ffffff';
+  ctx.font = `${Math.round(fs * 0.9)}px sans-serif`;
+  ctx.fillText('OPERADOR: ' + op.toUpperCase(), pad, y0 + lh * 2, maxW);
+  ctx.fillText('LOCAL: ' + tl.toUpperCase(), pad, y0 + lh * 3, maxW);
+  ctx.fillStyle = gps ? '#ffffff' : '#ffcc80';
+  ctx.fillText('GPS: ' + fmtGps(gps), pad, y0 + lh * 4, maxW);
 
-    // Carimbo proporcional ao tamanho da imagem
-    const fs = Math.max(13, Math.round(canvas.width / 45));
-    const lh = Math.round(fs * 1.45);
-    const barH = lh * 3 + Math.round(fs * 0.8);
-    const pad = Math.round(fs * 0.8);
-    const maxTextW = canvas.width - pad * 2;
-    ctx.fillStyle = 'rgba(0, 0, 0, 0.75)';
-    ctx.fillRect(0, canvas.height - barH, canvas.width, barH);
-    ctx.textBaseline = 'alphabetic';
-    ctx.fillStyle = '#00e676';
-    ctx.font = `bold ${fs}px sans-serif`;
-    ctx.fillText('CGS FLORESTAL | DATA/HORA: ' + timestamp, pad, canvas.height - barH + lh, maxTextW);
-    ctx.fillStyle = '#ffffff';
-    ctx.font = `${Math.round(fs * 0.9)}px sans-serif`;
-    ctx.fillText('OPERADOR: ' + op.toUpperCase(), pad, canvas.height - barH + lh * 2, maxTextW);
-    ctx.fillText('LOCAL: ' + tl.toUpperCase(), pad, canvas.height - barH + lh * 3, maxTextW);
-
-    state.photos[photoKey] = { dataUrl: canvas.toDataURL('image/jpeg', 0.72), time: timestamp };
-    // Foto nova invalida o envio anterior deste relatório
-    if (photoKey === 'fotoLimpeza') delete state.enviado.fim; else delete state.enviado.inicio;
-    saveState();
-    renderPhotoPreview(photoKey, state.photos[photoKey]);
-    toast('✅ Foto registrada e carimbada.');
-  };
-  img.onerror = function () {
-    URL.revokeObjectURL(url);
-    showError('⚠️ Não foi possível ler esta imagem. Tente novamente.');
-  };
-  img.src = url;
-}
-
-function renderPhotoPreview(photoKey, photoObj) {
+  const blob = await canvasToBlob(canvas, 'image/jpeg', 0.72);
+  if (viewKey !== rk) return;                    // usuário mudou de registro no meio
+  await saveMedia(photoKey, blob);
+  state.photos[photoKey] = { time: timestamp, gps: gps ? { lat: gps.lat, lon: gps.lon, acc: Math.round(gps.acc) } : null };
+  invalidate(photoKey === 'fotoLimpeza' ? 'fim' : 'inicio');
+  persist();
   const box = document.getElementById('box-' + photoKey);
   box.classList.add('done');
-  const camLabel = box.querySelector('.cam-label');
-  if (camLabel) camLabel.textContent = '🔁 Tirar Outra Foto';
+  box.querySelector('.cam-label').textContent = '🔁 Tirar Outra Foto';
+  renderPhotoPreview(photoKey);
+  validateAll();
+  toast(gps ? '✅ Foto registrada com GPS.' : '✅ Foto registrada (GPS indisponível: ative a localização).', gps ? 3000 : 5000);
+}
+
+function renderPhotoPreview(photoKey) {
+  const p = state.photos[photoKey];
   const prev = document.getElementById('preview-' + photoKey);
+  if (!p) { prev.innerHTML = ''; return; }
+  const m = mediaCache[photoKey];
+  const gpsHtml = p.gps
+    ? `📍 ${escapeHtml(fmtGps(p.gps))} · <a href="${mapsLink(p.gps)}" target="_blank" rel="noopener">ver no mapa</a>`
+    : '📍 GPS não disponível nesta foto';
   prev.innerHTML = `
-    <img src="${photoObj.dataUrl}" class="preview-img" alt="Foto carimbada ${escapeHtml(photoObj.time)}">
-    <div style="font-size:0.82rem; color:#2e7d32; font-weight:bold; margin-top:6px;">✅ Registrada em ${escapeHtml(photoObj.time)}</div>
-    <button type="button" class="btn-download" onclick="downloadPhoto('${photoKey}')">⬇️ Baixar foto carimbada para anexar</button>`;
+    ${m ? `<img src="${m.url}" class="preview-img" alt="Foto carimbada ${escapeHtml(p.time)}">` : '<div class="photo-error">Imagem não encontrada no aparelho.</div>'}
+    <div class="photo-info">✅ Registrada em ${escapeHtml(p.time)}</div>
+    <div class="photo-gps">${gpsHtml}</div>
+    ${m ? `<button type="button" class="btn-download" onclick="downloadMedia('${photoKey}')">⬇️ Baixar foto carimbada</button>` : ''}`;
 }
 
-function photoFileName(photoKey) {
-  const op = (state.operador || 'operador').normalize('NFD').replace(/[̀-ͯ]/g, '').replace(/[^a-zA-Z0-9]+/g, '_').slice(0, 30);
-  return `CGS_${todayKey}_${op}_${photoKey}.jpg`;
+/* =====================================================================
+   ASSINATURA NA TELA
+   ===================================================================== */
+const sigState = { inicio: { pts: 0, drawing: false }, fim: { pts: 0, drawing: false } };
+
+function sigSigner(tipo) {
+  return tipo === 'inicio' ? (state.inspetor || '').trim() : (state.operador || '').trim();
 }
 
-function downloadPhoto(photoKey) {
-  const photoObj = state.photos[photoKey];
-  if (!photoObj) return;
-  const a = document.createElement('a');
-  a.href = photoObj.dataUrl;
-  a.download = photoFileName(photoKey);
-  document.body.appendChild(a);
-  a.click();
-  a.remove();
+function renderSig(tipo) {
+  const box = document.getElementById('sig-' + tipo);
+  const a = state.assinaturas[tipo];
+  if (a) {
+    const m = mediaCache['sig_' + tipo];
+    box.innerHTML = `<div class="sig-done">
+      ${m ? `<img src="${m.url}" class="sig-img" alt="Assinatura de ${escapeHtml(a.nome)}">` : '<div class="photo-wait">Carregando assinatura...</div>'}
+      <div class="photo-info">✅ Assinado por ${escapeHtml(a.nome)} às ${escapeHtml(a.time)}</div>
+      ${isReadOnly() ? '' : `<button type="button" class="btn-download" onclick="redoSig('${tipo}')">✏️ Refazer assinatura</button>`}
+    </div>`;
+    return;
+  }
+  if (isReadOnly()) { box.innerHTML = '<div class="hint">Sem assinatura.</div>'; return; }
+  const quem = tipo === 'inicio' ? 'o responsável pela inspeção' : 'o operador';
+  box.innerHTML = `
+    <p class="hint" style="margin-top:0;">Assine com o dedo depois de completar tudo acima. Quem assina: ${quem}.</p>
+    <div class="sig-wrap" id="sigWrap-${tipo}">
+      <canvas class="sig-canvas" id="sigCanvas-${tipo}"></canvas>
+      <div class="sig-lock">🔒 Complete os itens acima para liberar a assinatura</div>
+    </div>
+    <div class="sig-actions">
+      <button type="button" class="btn-light" onclick="clearSig('${tipo}')">🧽 Limpar</button>
+      <button type="button" class="btn-light btn-ok" onclick="confirmSig('${tipo}')">✅ Confirmar assinatura</button>
+    </div>`;
+  const c = document.getElementById('sigCanvas-' + tipo);
+  const st = sigState[tipo];
+  const pos = e => { const r = c.getBoundingClientRect(); return [e.clientX - r.left, e.clientY - r.top]; };
+  c.addEventListener('pointerdown', e => {
+    if (document.getElementById('sigWrap-' + tipo).classList.contains('locked')) return;
+    sizeSigPad(tipo);
+    st.drawing = true;
+    try { c.setPointerCapture(e.pointerId); } catch (err) { /* alguns aparelhos não suportam */ }
+    const ctx = c.getContext('2d');
+    const [x, y] = pos(e);
+    ctx.beginPath(); ctx.moveTo(x, y);
+    e.preventDefault();
+  });
+  c.addEventListener('pointermove', e => {
+    if (!st.drawing) return;
+    const ctx = c.getContext('2d');
+    const [x, y] = pos(e);
+    ctx.lineTo(x, y); ctx.stroke();
+    st.pts++;
+    e.preventDefault();
+  });
+  const end = () => { st.drawing = false; };
+  c.addEventListener('pointerup', end);
+  c.addEventListener('pointercancel', end);
+  c.dataset.w = '';
+  sizeSigPad(tipo);
 }
 
-function dataUrlToFile(dataUrl, name) {
-  const [meta, b64] = dataUrl.split(',');
-  const mime = meta.match(/:(.*?);/)[1];
-  const bin = atob(b64);
-  const arr = new Uint8Array(bin.length);
-  for (let i = 0; i < bin.length; i++) arr[i] = bin.charCodeAt(i);
-  return new File([arr], name, { type: mime });
+// Ajusta a resolução do quadro de assinatura (só quando o tamanho muda: isso apaga o desenho)
+function sizeSigPad(tipo) {
+  const c = document.getElementById('sigCanvas-' + tipo);
+  if (!c) return;
+  const r = c.getBoundingClientRect();
+  if (!r.width) return;
+  const w = String(Math.round(r.width));
+  if (c.dataset.w === w) return;
+  const dpr = window.devicePixelRatio || 1;
+  c.width = Math.round(r.width * dpr);
+  c.height = Math.round(r.height * dpr);
+  c.dataset.w = w;
+  const ctx = c.getContext('2d');
+  ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+  ctx.fillStyle = '#fff';
+  ctx.fillRect(0, 0, r.width, r.height);
+  ctx.strokeStyle = '#0d1b2a';
+  ctx.lineWidth = 2.6;
+  ctx.lineCap = 'round';
+  ctx.lineJoin = 'round';
+  sigState[tipo].pts = 0;
 }
 
-/* ---------- Estado e validação ---------- */
-function saveState() {
-  state.operador = document.getElementById('operador').value;
-  state.talhao = document.getElementById('talhao').value;
+function clearSig(tipo) {
+  const c = document.getElementById('sigCanvas-' + tipo);
+  if (!c) return;
+  c.dataset.w = '';
+  sizeSigPad(tipo);
+}
+
+async function confirmSig(tipo) {
+  if (isReadOnly()) return;
+  if (faltas(state, tipo, true).length) { toast('Complete os itens acima antes de assinar.'); return; }
+  if (sigState[tipo].pts < 15) { toast('Assinatura muito curta. Assine com o dedo no quadro branco.'); return; }
+  const c = document.getElementById('sigCanvas-' + tipo);
+  // Reduz para no máx. 600 px de largura
+  const out = document.createElement('canvas');
+  const sc = Math.min(1, 600 / c.width);
+  out.width = Math.round(c.width * sc);
+  out.height = Math.round(c.height * sc);
+  out.getContext('2d').drawImage(c, 0, 0, out.width, out.height);
+  const blob = await canvasToBlob(out, 'image/png');
+  await saveMedia('sig_' + tipo, blob);
+  state.assinaturas[tipo] = { nome: sigSigner(tipo), time: horaAgora() };
+  delete state.enviado[tipo];
   persist();
+  renderSig(tipo);
+  validateAll();
+  toast('✅ Assinatura registrada.');
+}
+
+async function redoSig(tipo) {
+  if (isReadOnly()) return;
+  delete state.assinaturas[tipo];
+  delete state.enviado[tipo];
+  await deleteMedia('sig_' + tipo);
+  persist();
+  renderSig(tipo);
   validateAll();
 }
 
+/* =====================================================================
+   VALIDAÇÃO E BOTÕES
+   ===================================================================== */
 function validateAll() {
-  const hasBasicInfo = !!(state.operador.trim() && state.talhao.trim());
+  const vals = itensInicio(state).map(i => state.checksInicio[i.id]);
+  document.getElementById('nok-alert').style.display = vals.includes('NOK') ? 'block' : 'none';
 
-  // Aba 1
-  const inicioValues = ITENS_INICIO.map(i => state.checksInicio[i.id]);
-  const hasNokInicio = inicioValues.includes('NOK');
-  const allOkInicio = inicioValues.every(v => v === 'OK');
-  const hasPhotosInicio = !!(state.photos.fotoEpi && state.photos.fotoDosador);
-  document.getElementById('nok-alert').style.display = hasNokInicio ? 'block' : 'none';
+  ['inicio', 'fim'].forEach(tipo => {
+    const pre = faltas(state, tipo, true);
+    const wrap = document.getElementById('sigWrap-' + tipo);
+    if (wrap) {
+      const estavaTravado = wrap.classList.contains('locked');
+      wrap.classList.toggle('locked', pre.length > 0);
+      if (estavaTravado && !pre.length) sizeSigPad(tipo);
+    }
+    const f = faltas(state, tipo);
+    const ready = f.length === 0;
+    const txtOk = tipo === 'inicio' ? '📲 Liberar Trabalho & Enviar Relatório WhatsApp' : '📲 Enviar Relatório de Higienização WhatsApp';
+    const btn = document.getElementById('btnSend-' + tipo);
+    btn.disabled = !ready;
+    btn.classList.toggle('ready', ready);
+    btn.textContent = ready ? txtOk : '🔒 Falta: ' + f.join(', ');
+    const share = document.getElementById('btnShare-' + tipo);
+    share.disabled = !ready;
+    share.style.opacity = ready ? '1' : '0.5';
+    const pdfBtn = document.getElementById('btnPdf-' + tipo);
+    pdfBtn.disabled = !ready;
+    pdfBtn.style.opacity = ready ? '1' : '0.5';
+    document.getElementById('badge-' + tipo).textContent = state.enviado[tipo] ? '✅' : (ready ? '🟢' : '');
+    document.getElementById('sent-' + tipo).textContent = sentText(state.enviado[tipo]);
+    document.getElementById('sync-' + tipo).textContent = syncText(state, tipo);
+  });
+  document.getElementById('produto').classList.toggle('invalid', !state.produto && hasAnyProgress());
 
-  const faltaInicio = [];
-  if (!hasBasicInfo) faltaInicio.push('identificação');
-  const pendInicio = inicioValues.filter(v => !v).length;
-  if (hasNokInicio) faltaInicio.push('item NÃO OK');
-  else if (pendInicio) faltaInicio.push(`${pendInicio} item(ns) sem avaliação`);
-  const fotosInicio = ['fotoEpi', 'fotoDosador'].filter(k => !state.photos[k]).length;
-  if (fotosInicio) faltaInicio.push(`${fotosInicio} foto(s)`);
-  const okInicio = faltaInicio.length === 0;
+  const prog = hasAnyProgress();
+  ['operador', 'talhao'].forEach(id => document.getElementById(id).classList.toggle('invalid', !(state[id] || '').trim() && prog));
+  document.getElementById('inspetor').classList.toggle('invalid', !(state.inspetor || '').trim() && prog);
+  caItens(state).forEach(c => {
+    const el = document.getElementById('ca-' + c.id);
+    const v = state.cas[c.id] || '';
+    if (el) el.classList.toggle('invalid', (c.obrig && prog && !caValido(v)) || (!!v && !caValido(v)));
+  });
+}
 
-  setButton('btnSendInicio', okInicio,
-    '📲 Liberar Trabalho & Enviar Relatório WhatsApp',
-    '🔒 Falta: ' + faltaInicio.join(', '));
-  setButton('btnShareInicio', okInicio);
-  document.getElementById('badgeInicio').textContent = state.enviado.inicio ? '✅' : (okInicio ? '🟢' : '');
-  document.getElementById('sentInicio').textContent = state.enviado.inicio ? `Relatório enviado às ${state.enviado.inicio}` : '';
-
-  // Aba 2
-  const fimValues = ITENS_FIM.map(i => state.checksFim[i.id]);
-  const allOkFim = fimValues.every(v => v === 'OK');
-  const faltaFim = [];
-  if (!hasBasicInfo) faltaFim.push('identificação');
-  const nokFim = fimValues.filter(v => v === 'NOK').length;
-  const pendFim = fimValues.filter(v => !v).length;
-  if (nokFim) faltaFim.push(`${nokFim} passo(s) NÃO OK`);
-  if (pendFim) faltaFim.push(`${pendFim} passo(s) sem confirmação`);
-  if (!state.photos.fotoLimpeza) faltaFim.push('1 foto');
-  const okFim = hasBasicInfo && allOkFim && !!state.photos.fotoLimpeza;
-
-  setButton('btnSendFim', okFim,
-    '📲 Enviar Relatório de Higienização WhatsApp',
-    '🔒 Falta: ' + faltaFim.join(', '));
-  setButton('btnShareFim', okFim);
-  document.getElementById('badgeFim').textContent = state.enviado.fim ? '✅' : (okFim ? '🟢' : '');
-  document.getElementById('sentFim').textContent = state.enviado.fim ? `Relatório enviado às ${state.enviado.fim}` : '';
-
-  document.getElementById('operador').classList.toggle('invalid', !state.operador.trim() && hasAnyProgress());
-  document.getElementById('talhao').classList.toggle('invalid', !state.talhao.trim() && hasAnyProgress());
+function sentText(v) {
+  if (!v) return '';
+  return v.includes('/') ? `Relatório enviado em ${v}` : `Relatório enviado às ${v}`;
 }
 
 function hasAnyProgress() {
   return Object.keys(state.checksInicio).length > 0 || Object.keys(state.checksFim).length > 0 || Object.keys(state.photos).length > 0;
 }
 
-function setButton(id, ready, readyText, lockedText) {
-  const btn = document.getElementById(id);
-  btn.disabled = !ready;
-  if (readyText) {
-    btn.classList.toggle('ready', ready);
-    btn.textContent = ready ? readyText : lockedText;
-  } else {
-    btn.style.opacity = ready ? '1' : '0.5';
-  }
+/* =====================================================================
+   HISTÓRICO
+   ===================================================================== */
+function statusTexto(s, tipo) {
+  if (s.enviado[tipo]) return '✅ enviado' + (PLANILHA_URL ? ((s.sinc || {})[tipo] ? ' ☁️' : ' (☁️ na fila)') : '');
+  if (isReady(s, tipo)) return '⚠️ pronto, não enviado';
+  const iniciado = tipo === 'inicio'
+    ? Object.keys(s.checksInicio).length || s.photos.fotoEpi || s.photos.fotoDosador
+    : Object.keys(s.checksFim).length || s.photos.fotoLimpeza;
+  return iniciado ? '⏳ incompleto' : '—';
 }
 
-/* ---------- Relatório e envio ---------- */
+function renderHistory() {
+  const keys = recordKeys().reverse();
+  if (!keys.includes(currentKey)) keys.unshift(currentKey);
+  const list = document.getElementById('hist-list');
+  let html = '', diaAnterior = '';
+  keys.forEach(k => {
+    const s = k === viewKey ? state : (readRecord(k) || emptyState());
+    if (recDay(k) !== diaAnterior) {
+      diaAnterior = recDay(k);
+      const d = new Date(diaAnterior + 'T12:00:00');
+      html += `<div class="hist-day">${d.toLocaleDateString('pt-BR', { weekday: 'long', day: '2-digit', month: '2-digit' })}</div>`;
+    }
+    const atual = k === currentKey;
+    html += `<div class="hist-item ${atual ? 'current' : ''}">
+      <div class="hist-main">
+        <strong>${escapeHtml(s.operador || 'Operador não informado')}</strong>${s.talhao ? ' · ' + escapeHtml(s.talhao) : ''}${atual ? ' <em>(atual)</em>' : ''}
+        <div class="hist-status">Início de turno: ${statusTexto(s, 'inicio')} &nbsp;|&nbsp; Higienização: ${statusTexto(s, 'fim')}</div>
+      </div>
+      <button type="button" class="btn-light" onclick="openRecord('${k}', 'inicio')">${atual ? '✏️ Continuar' : '📂 Abrir'}</button>
+    </div>`;
+  });
+  list.innerHTML = html || '<div class="hist-empty">Nenhum registro ainda.</div>';
+}
+
+/* =====================================================================
+   RELATÓRIO E ENVIO
+   ===================================================================== */
+function casTexto(s) {
+  return caItens(s).filter(c => caValido(s.cas[c.id])).map(c => `${c.nome.replace(' (se usar)', '')} ${s.cas[c.id]}`).join(' · ');
+}
+
+function linhaFoto(k) {
+  const p = state.photos[k];
+  let l = `- ${PHOTO_LABEL[k]}: ${p.time}`;
+  l += p.gps ? `\n  📍 ${mapsLink(p.gps)} (±${p.gps.acc} m)` : `\n  📍 GPS não disponível`;
+  return l + '\n';
+}
+
 function buildMessage(tipo) {
-  const dataAtual = new Date().toLocaleDateString('pt-BR');
+  const dataReg = keyToBR(viewKey);     // data da inspeção, não do envio
+  const a = state.assinaturas[tipo];
   let msg = '';
   if (tipo === 'inicio') {
     msg += `*🌲 CGS FLORESTAL - INSPEÇÃO DIÁRIA DE EPI*\n`;
     msg += `*Atividade:* Combate a Formigas (Isca Granulada)\n`;
-    msg += `*Data:* ${dataAtual}\n`;
+    msg += `*Data:* ${dataReg}\n`;
     msg += `*Operador:* ${state.operador.trim()}\n`;
-    msg += `*Local/Talhão:* ${state.talhao.trim()}\n\n`;
+    msg += `*Local/Talhão:* ${state.talhao.trim()}\n`;
+    msg += `*Responsável pela inspeção:* ${state.inspetor.trim()}\n`;
+    msg += `*Produto (isca):* ${produtoDe(state).nome}\n\n`;
     msg += `*✅ 1. CHECKLIST DIÁRIO DE INSPEÇÃO DE EPIs:*\n`;
-    ITENS_INICIO.forEach(i => { msg += `- ${i.equip}: *${state.checksInicio[i.id]}*\n`; });
-    msg += `\n*📸 EVIDÊNCIAS COM DATA/HORA:*\n`;
-    msg += `- Foto 1 (EPIs completos): ${state.photos.fotoEpi.time}\n`;
-    msg += `- Foto 2 (Dosador/Luvas): ${state.photos.fotoDosador.time}\n`;
+    itensInicio(state).forEach(i => { msg += `- ${i.equip}: *${state.checksInicio[i.id]}*\n`; });
+    const cas = casTexto(state);
+    if (cas) msg += `\n*🏷️ Nº DE CA DOS EPIs:*\n${cas}\n`;
+    const ocorr = itensInicio(state).filter(i => state.ocorrencias[i.id] && state.ocorrencias[i.id].length);
+    if (ocorr.length) {
+      msg += `\n*🔁 AÇÕES CORRETIVAS (EPI reprovado e trocado):*\n`;
+      ocorr.forEach(i => state.ocorrencias[i.id].forEach(o => { msg += `- ${i.equip}: ${ocorrenciaTexto(o)}\n`; }));
+    }
+    msg += `\n*📸 EVIDÊNCIAS COM DATA/HORA E GPS:*\n`;
+    msg += linhaFoto('fotoEpi') + linhaFoto('fotoDosador');
+    msg += `\n*✍️ Assinado por:* ${a.nome} às ${a.time} (imagem anexa)\n`;
     msg += `\n_Status: LIBERADO PARA OS TALHÕES_`;
   } else {
     msg += `*🧼 CGS FLORESTAL - HIGIENIZAÇÃO DOS EPIs APÓS A JORNADA*\n`;
-    msg += `*Data:* ${dataAtual}\n`;
+    msg += `*Data:* ${dataReg}\n`;
     msg += `*Operador:* ${state.operador.trim()}\n`;
     msg += `*Local/Talhão:* ${state.talhao.trim()}\n\n`;
     msg += `*✅ 2. PROCEDIMENTOS DE HIGIENIZAÇÃO:*\n`;
     ITENS_FIM.forEach(i => { msg += `- ${i.titulo} *${state.checksFim[i.id]}*\n`; });
     msg += `\n*📸 EVIDÊNCIA DE LIMPEZA:*\n`;
-    msg += `- Foto 3 (Secagem/Armazenamento): ${state.photos.fotoLimpeza.time}\n`;
+    msg += linhaFoto('fotoLimpeza');
+    msg += `\n*✍️ Assinado pelo operador:* ${a.nome} às ${a.time} (imagem anexa)\n`;
     msg += `\n_Status: JORNADA ENCERRADA E EPIs HIGIENIZADOS_`;
+  }
+  if (recDay(viewKey) !== getTodayISO()) {
+    msg += `\n\n⏰ _Enviado com atraso em ${new Date().toLocaleDateString('pt-BR')} às ${horaAgora()} (registro feito sem sinal)._`;
   }
   return msg;
 }
 
+function mediaFor(tipo) { return tipo === 'inicio' ? ['fotoEpi', 'fotoDosador', 'sig_inicio'] : ['fotoLimpeza', 'sig_fim']; }
+
+function mediaFileName(name) {
+  const op = (state.operador || 'operador').normalize('NFD').replace(/[̀-ͯ]/g, '').replace(/[^a-zA-Z0-9]+/g, '_').slice(0, 30);
+  const ext = name.startsWith('sig_') ? 'png' : 'jpg';
+  return `CGS_${viewKey.replace('#', '-')}_${op}_${name}.${ext}`;
+}
+
+function downloadMedia(name) {
+  const m = mediaCache[name];
+  if (!m) return false;
+  const a = document.createElement('a');
+  a.href = m.url;
+  a.download = mediaFileName(name);
+  document.body.appendChild(a);
+  a.click();
+  a.remove();
+  return true;
+}
+
 function markSent(tipo) {
-  state.enviado[tipo] = new Date().toLocaleTimeString('pt-BR', { hour: '2-digit', minute: '2-digit' });
+  state.enviado[tipo] = (recDay(viewKey) !== getTodayISO() ? new Date().toLocaleDateString('pt-BR') + ' ' : '') + horaAgora();
+  persistAllowedInReadOnly = true;
   persist();
+  persistAllowedInReadOnly = false;
+  if (PLANILHA_URL && !(state.sinc || {})[tipo]) { addToQueue(viewKey, tipo); setTimeout(processQueue, 1500); }
   validateAll();
+  renderBanners();
+  if (tabAtual === 'hist') renderHistory();
 }
 
 function sendWhatsApp(tipo) {
+  if (!isReady(state, tipo)) return;
   if (!navigator.onLine) {
     alert('Você está sem internet no momento! Os dados e fotos estão salvos com segurança no aparelho. Assim que chegar em área com sinal, clique novamente no botão verde para enviar.');
     return;
   }
-  const msg = buildMessage(tipo);
-  const url = `https://wa.me/${WHATSAPP_PADRAO}?text=${encodeURIComponent(msg)}`;
-  // Abre o WhatsApp primeiro (precisa ser imediato ao clique para não ser bloqueado)
-  window.open(url, '_blank');
-  // Depois baixa as fotos para anexar manualmente
-  if (tipo === 'inicio') {
-    downloadPhoto('fotoEpi');
-    setTimeout(() => downloadPhoto('fotoDosador'), 600);
-  } else {
-    downloadPhoto('fotoLimpeza');
-  }
+  const url = `https://wa.me/${WHATSAPP_PADRAO}?text=${encodeURIComponent(buildMessage(tipo))}`;
+  window.open(url, '_blank');            // primeiro, para não ser bloqueado
   markSent(tipo);
-  toast('📎 Fotos baixadas: anexe-as na conversa do WhatsApp.', 5000);
+  // O PDF já contém fotos, GPS e assinatura: um único anexo
+  getPdf(viewKey, state, tipo)
+    .then(f => { saveFile(f); toast('📎 PDF do relatório baixado: anexe-o na conversa do WhatsApp.', 5000); })
+    .catch(() => {
+      mediaFor(tipo).forEach((name, i) => setTimeout(() => downloadMedia(name), 600 * i));
+      toast('📎 Fotos e assinatura baixadas: anexe-as na conversa do WhatsApp.', 5000);
+    });
+}
+
+function saveFile(file) {
+  const url = URL.createObjectURL(file);
+  const a = document.createElement('a');
+  a.href = url;
+  a.download = file.name;
+  document.body.appendChild(a);
+  a.click();
+  a.remove();
+  setTimeout(() => URL.revokeObjectURL(url), 30000);
+}
+
+async function downloadPdf(tipo) {
+  if (!isReady(state, tipo)) return;
+  try {
+    saveFile(await getPdf(viewKey, state, tipo));
+    toast('📄 PDF gerado.');
+  } catch (e) {
+    toast('Não foi possível gerar o PDF: ' + (e.message || e), 5000);
+  }
 }
 
 function canShareFiles() {
@@ -805,42 +1635,467 @@ function canShareFiles() {
 }
 
 async function shareReport(tipo) {
-  const keys = tipo === 'inicio' ? ['fotoEpi', 'fotoDosador'] : ['fotoLimpeza'];
-  const files = keys.map(k => dataUrlToFile(state.photos[k].dataUrl, photoFileName(k)));
-  const text = buildMessage(tipo);
+  if (!isReady(state, tipo)) return;
+  let files;
   try {
-    await navigator.share({ files, text, title: 'CGS Florestal - EPI' });
+    const pdf = await getPdf(viewKey, state, tipo);
+    files = [pdf];
+    if (!navigator.canShare({ files })) files = null;
+  } catch (e) { files = null; }
+  if (!files) {
+    // Aparelho não compartilha PDF: envia as imagens
+    const names = mediaFor(tipo);
+    if (names.some(n => !mediaCache[n])) { toast('Fotos ainda carregando. Tente de novo em instantes.'); return; }
+    files = names.map(n => new File([mediaCache[n].blob], mediaFileName(n), { type: mediaCache[n].blob.type }));
+  }
+  try {
+    await navigator.share({ files, text: buildMessage(tipo), title: 'CGS Florestal - EPI' });
     markSent(tipo);
   } catch (e) {
-    if (e.name !== 'AbortError') toast('Não foi possível compartilhar. Use o botão verde.');
+    if (e.name === 'NotAllowedError') toast('PDF pronto. Toque em Compartilhar de novo.');
+    else if (e.name !== 'AbortError') toast('Não foi possível compartilhar. Use o botão verde.');
   }
 }
 
-function resetInspection() {
-  if (!confirm('Apagar os dados desta inspeção (checklists e fotos) para iniciar outra?\n\nConfira se o relatório já foi enviado.')) return;
-  state = emptyState();
-  persist();
-  document.getElementById('operador').value = '';
-  document.getElementById('talhao').value = '';
-  PHOTO_KEYS.forEach(k => {
-    document.getElementById('box-' + k).classList.remove('done');
-    document.getElementById('preview-' + k).innerHTML = '';
-    const lbl = document.querySelector('#box-' + k + ' .cam-label');
-    if (lbl) lbl.textContent = '📷 Tirar Foto Agora';
+/* =====================================================================
+   GERADOR DE PDF (próprio, funciona sem internet)
+   Texto em Helvetica (codificação WinAnsi: aceita acentos do português),
+   fotos JPEG embutidas sem perda e assinatura convertida para JPEG.
+   ===================================================================== */
+const PDFW = 595.28, PDFH = 841.89;   // A4 em pontos
+
+const WINANSI_EXTRA = { '€': 0x80, '‚': 0x82, '„': 0x84, '…': 0x85, '‘': 0x91, '’': 0x92, '“': 0x93, '”': 0x94, '•': 0x95, '–': 0x96, '—': 0x97, '™': 0x99 };
+
+function winAnsiBytes(str) {
+  const out = [];
+  for (const ch of String(str)) {
+    const c = ch.codePointAt(0);
+    if (c === 0x28 || c === 0x29 || c === 0x5c) out.push(0x5c, c);       // ( ) \ precisam de escape
+    else if (c >= 32 && c < 127) out.push(c);
+    else if (c >= 160 && c <= 255) out.push(c);
+    else if (WINANSI_EXTRA[ch]) out.push(WINANSI_EXTRA[ch]);
+    else if (ch === '→') out.push(0x2d, 0x3e);                            // ->
+    else if (c >= 0x2000) { /* emojis e símbolos: omitidos */ }
+    else out.push(0x3f);                                                  // ?
+  }
+  return out;
+}
+
+// Medida de texto: Arial tem as mesmas larguras da Helvetica
+const measureCtx = document.createElement('canvas').getContext('2d');
+function textWidth(str, size, bold) {
+  measureCtx.font = `${bold ? 'bold ' : ''}${size}px Arial, Helvetica, "Liberation Sans", sans-serif`;
+  return measureCtx.measureText(String(str).replace(/[\u{1F000}-\u{1FFFF}☀-➿️]/gu, '')).width * 1.04;
+}
+function wrapText(str, size, bold, maxW) {
+  const lines = [];
+  String(str).split('\n').forEach(par => {
+    let line = '';
+    par.split(/\s+/).forEach(w => {
+      const t = line ? line + ' ' + w : w;
+      if (textWidth(t, size, bold) <= maxW || !line) line = t;
+      else { lines.push(line); line = w; }
+    });
+    lines.push(line);
   });
-  renderInicioTable();
-  renderFimList();
-  validateAll();
+  return lines;
+}
+
+class PdfDoc {
+  constructor() { this.pages = []; this.images = []; this.addPage(); }
+  addPage() { this.cur = []; this.pages.push(this.cur); }
+  op(s) { this.cur.push(s); }
+  rgb(c) { return c.map(v => (v / 255).toFixed(3)).join(' '); }
+  rect(x, y, w, h, color) { this.op(`${this.rgb(color)} rg ${x.toFixed(2)} ${(PDFH - y - h).toFixed(2)} ${w.toFixed(2)} ${h.toFixed(2)} re f`); }
+  strokeRect(x, y, w, h, color, lw) { this.op(`${this.rgb(color)} RG ${lw || 0.6} w ${x.toFixed(2)} ${(PDFH - y - h).toFixed(2)} ${w.toFixed(2)} ${h.toFixed(2)} re S`); }
+  line(x1, y1, x2, y2, color, lw) { this.op(`${this.rgb(color)} RG ${lw || 0.6} w ${x1.toFixed(2)} ${(PDFH - y1).toFixed(2)} m ${x2.toFixed(2)} ${(PDFH - y2).toFixed(2)} l S`); }
+  // y = linha de base, medida a partir do topo
+  text(x, y, str, size, bold, color) {
+    this.op({ pre: `BT /${bold ? 'F2' : 'F1'} ${size} Tf ${this.rgb(color || [33, 33, 33])} rg ${x.toFixed(2)} ${(PDFH - y).toFixed(2)} Td (`, bytes: winAnsiBytes(str), post: ') Tj ET' });
+  }
+  addJpeg(bytes, w, h) { this.images.push({ bytes, w, h }); return this.images.length - 1; }
+  image(i, x, y, w, h) { this.op(`q ${w.toFixed(2)} 0 0 ${h.toFixed(2)} ${x.toFixed(2)} ${(PDFH - y - h).toFixed(2)} cm /Im${i} Do Q`); }
+
+  build() {
+    const enc = new TextEncoder();
+    const chunks = [];
+    let size = 0;
+    const offsets = [];
+    const push = b => { const u = typeof b === 'string' ? enc.encode(b) : b; chunks.push(u); size += u.length; };
+    const obj = (n, body) => { offsets[n] = size; push(`${n} 0 obj\n`); body(); push('\nendobj\n'); };
+
+    push('%PDF-1.4\n');
+    push(new Uint8Array([0x25, 0xe2, 0xe3, 0xcf, 0xd3, 0x0a]));
+    const nImg = this.images.length;
+    const firstImg = 5, firstPage = firstImg + nImg;
+    const pageNums = this.pages.map((_, i) => firstPage + i * 2);
+
+    obj(1, () => push('<< /Type /Catalog /Pages 2 0 R >>'));
+    obj(2, () => push(`<< /Type /Pages /Kids [${pageNums.map(n => n + ' 0 R').join(' ')}] /Count ${this.pages.length} >>`));
+    obj(3, () => push('<< /Type /Font /Subtype /Type1 /BaseFont /Helvetica /Encoding /WinAnsiEncoding >>'));
+    obj(4, () => push('<< /Type /Font /Subtype /Type1 /BaseFont /Helvetica-Bold /Encoding /WinAnsiEncoding >>'));
+    this.images.forEach((im, i) => obj(firstImg + i, () => {
+      push(`<< /Type /XObject /Subtype /Image /Width ${im.w} /Height ${im.h} /ColorSpace /DeviceRGB /BitsPerComponent 8 /Filter /DCTDecode /Length ${im.bytes.length} >>\nstream\n`);
+      push(im.bytes);
+      push('\nendstream');
+    }));
+    const xobj = this.images.map((_, i) => `/Im${i} ${firstImg + i} 0 R`).join(' ');
+    this.pages.forEach((ops, i) => {
+      const pn = pageNums[i];
+      const parts = [];
+      ops.forEach(o => {
+        if (typeof o === 'string') parts.push(enc.encode(o + '\n'));
+        else { parts.push(enc.encode(o.pre)); parts.push(new Uint8Array(o.bytes)); parts.push(enc.encode(o.post + '\n')); }
+      });
+      const len = parts.reduce((s, p) => s + p.length, 0);
+      obj(pn, () => push(`<< /Type /Page /Parent 2 0 R /MediaBox [0 0 ${PDFW} ${PDFH}] /Resources << /Font << /F1 3 0 R /F2 4 0 R >> /XObject << ${xobj} >> >> /Contents ${pn + 1} 0 R >>`));
+      obj(pn + 1, () => { push(`<< /Length ${len} >>\nstream\n`); parts.forEach(push); push('\nendstream'); });
+    });
+    const total = firstPage + this.pages.length * 2;
+    const xref = size;
+    let x = `xref\n0 ${total}\n0000000000 65535 f \n`;
+    for (let n = 1; n < total; n++) x += String(offsets[n]).padStart(10, '0') + ' 00000 n \n';
+    push(x);
+    push(`trailer\n<< /Size ${total} /Root 1 0 R >>\nstartxref\n${xref}\n%%EOF\n`);
+    const out = new Uint8Array(size);
+    let p = 0;
+    chunks.forEach(c => { out.set(c, p); p += c.length; });
+    return out;
+  }
+}
+
+// Converte qualquer imagem (blob) em JPEG + dimensões, para embutir no PDF
+async function blobToJpeg(blob) {
+  const url = URL.createObjectURL(blob);
+  try {
+    const img = await new Promise((res, rej) => { const i = new Image(); i.onload = () => res(i); i.onerror = rej; i.src = url; });
+    if (blob.type === 'image/jpeg') {
+      return { bytes: new Uint8Array(await blob.arrayBuffer()), w: img.naturalWidth, h: img.naturalHeight };
+    }
+    const c = document.createElement('canvas');
+    c.width = img.naturalWidth; c.height = img.naturalHeight;
+    const ctx = c.getContext('2d');
+    ctx.fillStyle = '#fff'; ctx.fillRect(0, 0, c.width, c.height);
+    ctx.drawImage(img, 0, 0);
+    const jb = await canvasToBlob(c, 'image/jpeg', 0.9);
+    return { bytes: new Uint8Array(await jb.arrayBuffer()), w: c.width, h: c.height };
+  } finally { URL.revokeObjectURL(url); }
+}
+
+// Código de verificação: SHA-256 dos dados e das imagens do relatório
+async function verificationCode(s, tipo, imgs) {
+  if (!(window.crypto && crypto.subtle)) return '';
+  const enc = new TextEncoder();
+  const parts = [enc.encode(JSON.stringify([tipo, s.operador, s.talhao, s.inspetor, s.produto, s.cas, s.checksInicio, s.checksFim, s.photos, s.assinaturas, s.ocorrencias]))].concat(imgs.map(i => i.bytes));
+  const len = parts.reduce((a, p) => a + p.length, 0);
+  const all = new Uint8Array(len);
+  let o = 0;
+  parts.forEach(p => { all.set(p, o); o += p.length; });
+  const h = new Uint8Array(await crypto.subtle.digest('SHA-256', all));
+  const hex = Array.from(h.slice(0, 8)).map(b => b.toString(16).padStart(2, '0')).join('').toUpperCase();
+  return hex.match(/.{4}/g).join('-');
+}
+
+let pdfCache = null;   // { key, file }
+
+function pdfFileName(rk, s, tipo) {
+  const op = (s.operador || 'operador').normalize('NFD').replace(/[̀-ͯ]/g, '').replace(/[^a-zA-Z0-9]+/g, '_').slice(0, 30);
+  return `CGS_${rk.replace('#', '-')}_${op}_${tipo === 'inicio' ? 'inspecao' : 'higienizacao'}.pdf`;
+}
+
+async function getPdf(rk, s, tipo) {
+  const key = rk + '|' + tipo + '|' + JSON.stringify([s.enviado[tipo], s.assinaturas[tipo], s.photos]);
+  if (pdfCache && pdfCache.key === key) return pdfCache.file;
+  const file = await buildPdf(rk, s, tipo);
+  pdfCache = { key, file };
+  return file;
+}
+
+async function buildPdf(rk, s, tipo) {
+  const M = 40, CW = PDFW - 2 * M, BOTTOM = PDFH - 50;
+  const GREEN = [27, 94, 32], LIGHT = [232, 245, 233], GRAY = [96, 125, 139], RED = [198, 40, 40], TXT = [33, 33, 33];
+  const doc = new PdfDoc();
+  let y = M;
+
+  const photoNames = tipo === 'inicio' ? ['fotoEpi', 'fotoDosador'] : ['fotoLimpeza'];
+  const imgs = [];
+  for (const n of photoNames.concat(['sig_' + tipo])) {
+    const b = (rk === viewKey && mediaCache[n]) ? mediaCache[n].blob : await loadBlob(rk, s, n);
+    imgs.push(b ? await blobToJpeg(b) : null);
+  }
+  const code = await verificationCode(s, tipo, imgs.filter(Boolean));
+
+  const ensure = h => { if (y + h > BOTTOM) { doc.addPage(); y = M; } };
+  // minNext: espaço do conteúdo que vem logo abaixo (evita título sozinho no fim da página)
+  const section = (title, minNext) => {
+    ensure(36 + (minNext || 20));
+    y += 8;
+    doc.rect(M, y, CW, 20, LIGHT);
+    doc.text(M + 8, y + 14, title, 10.5, true, GREEN);
+    y += 28;
+  };
+  const para = (str, size, bold, color, indent) => {
+    wrapText(str, size, bold, CW - (indent || 0)).forEach(l => { ensure(size + 4); doc.text(M + (indent || 0), y + size, l, size, bold, color); y += size + 4; });
+  };
+
+  // Cabeçalho
+  const titulo = tipo === 'inicio' ? 'RELATÓRIO DE INSPEÇÃO DIÁRIA DE EPI' : 'RELATÓRIO DE HIGIENIZAÇÃO DOS EPIs';
+  doc.rect(0, 0, PDFW, 70, GREEN);
+  doc.text(M, 30, 'CGS FLORESTAL', 17, true, [255, 255, 255]);
+  doc.text(M, 50, titulo, 12, true, [200, 230, 201]);
+  doc.text(M, 63, 'Combate a formigas (isca granulada) · Reflorestamento', 8.5, false, [200, 230, 201]);
+  y = 88;
+
+  // Identificação
+  const info = [['Data do registro', keyToBR(rk) + (recSeq(rk) > 1 ? ` (inspeção nº ${recSeq(rk)})` : '')],
+    ['Operador', s.operador], ['Talhão / Fazenda', s.talhao]];
+  if (tipo === 'inicio') {
+    info.push(['Responsável pela inspeção', s.inspetor]);
+    const p = produtoDe(s);
+    if (p) info.push(['Produto (isca)', p.nome]);
+  }
+  info.push(['Situação', tipo === 'inicio' ? 'LIBERADO PARA OS TALHÕES' : 'JORNADA ENCERRADA E EPIs HIGIENIZADOS']);
+  if (s.enviado[tipo]) info.push(['Enviado', s.enviado[tipo].includes('/') ? s.enviado[tipo] : keyToBR(rk) + ' ' + s.enviado[tipo]]);
+  info.forEach(([k, v]) => {
+    const lines = wrapText(v || '-', 10, false, CW - 160);
+    ensure(lines.length * 14 + 4);
+    doc.text(M, y + 10, k + ':', 9.5, true, GRAY);
+    lines.forEach((l, i) => doc.text(M + 160, y + 10 + i * 14, l, 10, i === 0 && k === 'Situação', TXT));
+    y += lines.length * 14 + 3;
+  });
+
+  // Checklist
+  section(tipo === 'inicio' ? '1. CHECKLIST DE INSPEÇÃO DOS EPIs' : '2. PROCEDIMENTOS DE HIGIENIZAÇÃO');
+  const itens = tipo === 'inicio' ? itensInicio(s).map(i => [i.equip, s.checksInicio[i.id]]) : ITENS_FIM.map(i => [i.titulo.replace(/:$/, ''), s.checksFim[i.id]]);
+  itens.forEach(([nome, val], idx) => {
+    const lines = wrapText(nome, 10, false, CW - 110);
+    const h = lines.length * 13 + 8;
+    ensure(h);
+    if (idx % 2 === 0) doc.rect(M, y, CW, h, [250, 251, 250]);
+    lines.forEach((l, i) => doc.text(M + 8, y + 14 + i * 13, l, 10, false, TXT));
+    const ok = val === 'OK';
+    doc.rect(M + CW - 70, y + 4, 62, h - 8, ok ? [46, 125, 50] : RED);
+    const lbl = ok ? 'OK' : (val === 'NOK' ? 'NÃO OK' : '-');
+    doc.text(M + CW - 39 - textWidth(lbl, 9.5, true) / 2, y + h / 2 + 3.5, lbl, 9.5, true, [255, 255, 255]);
+    y += h;
+  });
+
+  if (tipo === 'inicio') {
+    const cas = casTexto(s);
+    if (cas) { section('NÚMEROS DE CA DOS EPIs'); para(cas, 10, false, TXT, 8); }
+    const ocorr = itensInicio(s).filter(i => s.ocorrencias[i.id] && s.ocorrencias[i.id].length);
+    if (ocorr.length) {
+      section('AÇÕES CORRETIVAS (EPI REPROVADO E TROCADO)');
+      ocorr.forEach(i => s.ocorrencias[i.id].forEach(o => para(`• ${i.equip}: ${ocorrenciaTexto(o)}`, 10, false, [183, 28, 28], 8)));
+    }
+  }
+
+  // Fotos (2 por linha)
+  const gap = 14, colW = (CW - gap) / 2;
+  const primeiraAltura = Math.max(...imgs.slice(0, Math.min(2, photoNames.length)).map(im => (im ? im.h * Math.min(colW / im.w, 230 / im.h) : 40)));
+  section(tipo === 'inicio' ? 'EVIDÊNCIAS FOTOGRÁFICAS (PRÉ-TRABALHO)' : 'EVIDÊNCIA FOTOGRÁFICA (PÓS-JORNADA)', primeiraAltura + 50);
+  for (let i = 0; i < photoNames.length; i += 2) {
+    const row = photoNames.slice(i, i + 2);
+    const dims = row.map((n, j) => {
+      const im = imgs[i + j];
+      if (!im) return { w: colW, h: 40 };
+      const sc = Math.min(colW / im.w, 230 / im.h);
+      return { w: im.w * sc, h: im.h * sc };
+    });
+    const imgH = Math.max(...dims.map(d => d.h));
+    ensure(imgH + 50);
+    row.forEach((n, j) => {
+      const x = M + j * (colW + gap);
+      const im = imgs[i + j];
+      const p = s.photos[n];
+      if (im) {
+        const idx = doc.addJpeg(im.bytes, im.w, im.h);
+        doc.image(idx, x, y, dims[j].w, dims[j].h);
+        doc.strokeRect(x, y, dims[j].w, dims[j].h, [200, 200, 200], 0.5);
+      } else {
+        doc.text(x, y + 20, 'Imagem não encontrada no aparelho', 9, false, RED);
+      }
+      let cy = y + imgH + 12;
+      doc.text(x, cy, PHOTO_LABEL[n], 9, true, TXT); cy += 12;
+      if (p) {
+        doc.text(x, cy, 'Data/hora: ' + p.time, 8.5, false, GRAY); cy += 11;
+        doc.text(x, cy, 'GPS: ' + fmtGps(p.gps), 8.5, false, GRAY);
+      }
+    });
+    y += imgH + 46;
+  }
+
+  // Assinatura
+  section(tipo === 'inicio' ? 'ASSINATURA DO RESPONSÁVEL PELA INSPEÇÃO' : 'ASSINATURA DO OPERADOR', 110);
+  const sig = imgs[imgs.length - 1];
+  const a = s.assinaturas[tipo];
+  ensure(110);
+  if (sig) {
+    const sc = Math.min(240 / sig.w, 80 / sig.h);
+    doc.image(doc.addJpeg(sig.bytes, sig.w, sig.h), M + 8, y, sig.w * sc, sig.h * sc);
+    y += sig.h * sc + 4;
+  }
+  doc.line(M + 8, y, M + 260, y, [120, 120, 120], 0.7);
+  y += 13;
+  if (a) { doc.text(M + 8, y, a.nome, 10, true, TXT); y += 12; doc.text(M + 8, y, 'Assinado às ' + a.time + ' de ' + keyToBR(rk), 8.5, false, GRAY); y += 12; }
+
+  // Rodapé com número de página
+  const geradoEm = new Date().toLocaleDateString('pt-BR') + ' ' + horaAgora();
+  const total = doc.pages.length;
+  doc.pages.forEach((pg, i) => {
+    doc.cur = pg;
+    doc.line(M, PDFH - 34, PDFW - M, PDFH - 34, [200, 200, 200], 0.5);
+    doc.text(M, PDFH - 22, `Gerado pelo app EPI CGS ${APP_VERSION} em ${geradoEm}${code ? ' · Código de verificação: ' + code : ''}`, 7.5, false, GRAY);
+    const pgTxt = `Página ${i + 1} de ${total}`;
+    doc.text(PDFW - M - textWidth(pgTxt, 7.5, false), PDFH - 22, pgTxt, 7.5, false, GRAY);
+  });
+
+  return new File([doc.build()], pdfFileName(rk, s, tipo), { type: 'application/pdf' });
+}
+
+/* =====================================================================
+   PLANILHA GOOGLE: fila de envio que espera o sinal
+   Cada relatório enviado entra na fila; quando houver internet, o app
+   manda os dados + o PDF para o Apps Script, que grava uma linha na
+   planilha e guarda o PDF no Google Drive.
+   ===================================================================== */
+const KEY_FILA = 'cgsepi_fila';
+const KEY_DEVICE = 'cgsepi_aparelho';
+let syncing = false;
+
+function deviceId() {
+  let id = null;
+  try { id = localStorage.getItem(KEY_DEVICE); } catch (e) {}
+  if (!id) {
+    id = Math.random().toString(36).slice(2, 8).toUpperCase();
+    try { localStorage.setItem(KEY_DEVICE, id); } catch (e) {}
+  }
+  return id;
+}
+
+function readQueue() { try { return JSON.parse(localStorage.getItem(KEY_FILA)) || []; } catch (e) { return []; } }
+function writeQueue(q) { try { localStorage.setItem(KEY_FILA, JSON.stringify(q)); } catch (e) {} }
+
+function addToQueue(rk, tipo) {
+  const q = readQueue();
+  if (!q.some(i => i.rk === rk && i.tipo === tipo)) { q.push({ rk, tipo, tentativas: 0 }); writeQueue(q); }
+}
+
+function syncText(s, tipo) {
+  if (!PLANILHA_URL || !s.enviado[tipo]) return '';
+  if ((s.sinc || {})[tipo]) return `☁️ Registrado na planilha em ${s.sinc[tipo]}`;
+  return '☁️ Na fila: será registrado na planilha quando houver sinal';
+}
+
+async function processQueue() {
+  if (syncing || !PLANILHA_URL || !navigator.onLine) return;
+  syncing = true;
+  flushSave();
+  let q = readQueue();
+  try {
+    for (const item of q.slice()) {
+      const isView = item.rk === viewKey;
+      const s = isView ? state : readRecord(item.rk);
+      if (!s || !s.enviado[item.tipo] || (s.sinc || {})[item.tipo]) { q = q.filter(i => i !== item); continue; }
+      const pdf = await getPdf(item.rk, s, item.tipo);
+      const payload = await buildSheetPayload(item.rk, s, item.tipo, pdf);
+      let resp;
+      try {
+        const r = await fetch(PLANILHA_URL, {
+          method: 'POST', redirect: 'follow',
+          headers: { 'Content-Type': 'text/plain;charset=utf-8' },   // evita bloqueio de CORS no Apps Script
+          body: JSON.stringify(payload)
+        });
+        resp = await r.json();
+      } catch (e) {
+        item.tentativas++;
+        break;                                  // sem sinal ou erro de rede: tenta depois
+      }
+      if (resp && resp.ok) {
+        const quando = new Date().toLocaleDateString('pt-BR') + ' ' + horaAgora();
+        s.sinc = s.sinc || {};
+        s.sinc[item.tipo] = quando;
+        if (isView) { persistAllowedInReadOnly = true; persist(); persistAllowedInReadOnly = false; }
+        else { try { writeRecord(item.rk, s); } catch (e) {} }
+        q = q.filter(i => i !== item);
+      } else {
+        item.tentativas++;
+        if (resp && resp.erro === 'token') { toast('⚠️ Planilha recusou o envio: código de acesso (token) incorreto.', 6000); break; }
+      }
+    }
+  } finally {
+    writeQueue(q);
+    syncing = false;
+    validateAll();
+    if (tabAtual === 'hist') renderHistory();
+  }
+}
+
+async function buildSheetPayload(rk, s, tipo, pdf) {
+  const itens = tipo === 'inicio'
+    ? itensInicio(s).map(i => `${i.equip}: ${s.checksInicio[i.id]}`)
+    : ITENS_FIM.map(i => `${i.titulo.replace(/:$/, '')}: ${s.checksFim[i.id]}`);
+  const fotos = (tipo === 'inicio' ? ['fotoEpi', 'fotoDosador'] : ['fotoLimpeza']).map(k => s.photos[k]);
+  const gps = fotos.map(p => (p && p.gps ? mapsLink(p.gps) : '')).filter(Boolean)[0] || '';
+  const acoes = tipo === 'inicio'
+    ? itensInicio(s).filter(i => (s.ocorrencias[i.id] || []).length).map(i => s.ocorrencias[i.id].map(o => `${i.equip}: ${ocorrenciaTexto(o)}`).join('; ')).join('; ')
+    : '';
+  const a = s.assinaturas[tipo] || {};
+  const dataUrl = await blobToDataUrl(pdf);
+  return {
+    token: PLANILHA_TOKEN,
+    id: `${deviceId()}_${rk}_${tipo}_${s.enviado[tipo]}`,
+    tipo: tipo === 'inicio' ? 'Início de turno (inspeção)' : 'Pós-jornada (higienização)',
+    data: keyToBR(rk),
+    operador: s.operador, talhao: s.talhao,
+    responsavel: tipo === 'inicio' ? s.inspetor : '',
+    produto: tipo === 'inicio' && produtoDe(s) ? produtoDe(s).nome : '',
+    itens: itens.join('; '),
+    cas: tipo === 'inicio' ? casTexto(s) : '',
+    acoes,
+    fotos: fotos.map(p => (p ? p.time : '')).join(' | '),
+    gps,
+    assinadoPor: a.nome ? `${a.nome} às ${a.time}` : '',
+    enviadoEm: s.enviado[tipo],
+    aparelho: deviceId(),
+    versao: APP_VERSION,
+    pdfNome: pdf.name,
+    pdfBase64: dataUrl.split(',')[1]
+  };
+}
+
+/* =====================================================================
+   NOVA INSPEÇÃO (outro operador no mesmo aparelho)
+   ===================================================================== */
+function newInspection() {
+  if (isReadOnly()) return;
+  if (!hasAnyProgress() && !state.operador.trim()) { toast('A inspeção atual ainda está vazia: use-a para o próximo operador.'); return; }
+  let msg = `Iniciar a inspeção de outro operador?\n\nA inspeção atual${state.operador ? ' (' + state.operador + ')' : ''} fica salva no Histórico.`;
+  if (hasUnsent(state)) msg += '\n\n⚠️ Ela tem relatório pronto que AINDA NÃO FOI ENVIADO. O aviso continuará aparecendo até o envio.';
+  if (!confirm(msg)) return;
+  flushSave();
+  persist();
+  const hoje = getTodayISO();
+  const maxSeq = recordKeys().filter(k => recDay(k) === hoje).reduce((m, k) => Math.max(m, recSeq(k)), 1);
+  const novo = `${hoje}#${maxSeq + 1}`;
+  setCurrent(novo);
+  viewKey = novo;
+  state = newRecordState(false);    // mantém talhão e responsável; operador e CAs em branco
+  persist();
+  renderAll();
   switchTab('inicio');
   document.getElementById('operador').focus();
+  toast('➕ Nova inspeção iniciada. A anterior está no Histórico.');
 }
 
 init();
 
-/* ---------- Aplicativo instalável (PWA) ----------
+/* =====================================================================
+   APLICATIVO INSTALÁVEL (PWA)
    Só é ativado quando a página é servida por https (ou localhost).
-   Aberto direto do arquivo (file://), tudo continua funcionando normalmente. */
-const APP_VERSION = 'v2.1';
+   Aberto direto do arquivo (file://), tudo continua funcionando normalmente.
+   ===================================================================== */
+const APP_VERSION = 'v2.4';
 document.getElementById('appVersion').textContent = 'Versão ' + APP_VERSION;
 let deferredInstall = null;
 
@@ -866,7 +2121,6 @@ if (/^https?:$/.test(location.protocol)) {
   if ('serviceWorker' in navigator) {
     window.addEventListener('load', () => {
       navigator.serviceWorker.register('sw.js').then(reg => {
-        // Quando houver versão nova publicada, avisa e atualiza
         reg.addEventListener('updatefound', () => {
           const nw = reg.installing;
           nw && nw.addEventListener('statechange', () => {
@@ -886,7 +2140,6 @@ if (/^https?:$/.test(location.protocol)) {
       document.getElementById('installBox').classList.remove('hidden');
       document.getElementById('btnInstall').classList.remove('hidden');
     });
-    // iPhone/iPad não têm botão de instalar: mostra instrução
     if (/iphone|ipad|ipod/i.test(navigator.userAgent)) {
       document.getElementById('installBox').classList.remove('hidden');
       document.getElementById('installHint').innerHTML = 'No Safari, toque em <strong>Compartilhar ⬆️</strong> e depois em <strong>“Adicionar à Tela de Início”</strong>.';
@@ -898,7 +2151,7 @@ if (/^https?:$/.test(location.protocol)) {
   });
 }
 
-// Pede ao navegador para não apagar os dados salvos (fotos do dia)
+// Pede ao navegador para não apagar os dados salvos (fotos e histórico)
 if (navigator.storage && navigator.storage.persist) {
   navigator.storage.persist().catch(() => {});
 }

@@ -1,7 +1,8 @@
 /* Service worker: guarda o app no celular para abrir sem internet.
    Ao publicar uma versão nova do index.html, troque o número abaixo
    (ex.: 'epi-cgs-v2.2') para os celulares baixarem a atualização. */
-const CACHE = 'epi-cgs-v2.1';
+const CACHE = 'epi-cgs-v2.4';
+const ESPERA_REDE_MS = 3000;   // com sinal fraco, abre pela cópia guardada após 3 s
 const ARQUIVOS = [
   './',
   './index.html',
@@ -29,17 +30,26 @@ self.addEventListener('fetch', event => {
   const req = event.request;
   if (req.method !== 'GET' || new URL(req.url).origin !== self.location.origin) return;
 
-  // Página: tenta a rede (pega atualização) e cai no cache se estiver offline
+  // Página: tenta a rede (pega atualização), mas não espera mais que ESPERA_REDE_MS.
+  // Se a rede demorar ou falhar, abre a cópia guardada; a rede continua baixando
+  // em segundo plano e atualiza a cópia para a próxima abertura.
   if (req.mode === 'navigate') {
-    event.respondWith(
-      fetch(req)
-        .then(res => {
-          const copy = res.clone();
-          caches.open(CACHE).then(c => c.put('./index.html', copy));
-          return res;
-        })
-        .catch(() => caches.match('./index.html'))
-    );
+    const rede = fetch(req).then(res => {
+      if (res.ok) {
+        const copy = res.clone();
+        caches.open(CACHE).then(c => c.put('./index.html', copy));
+      }
+      return res;
+    });
+    event.waitUntil(rede.catch(() => {}));
+    event.respondWith((async () => {
+      const guardada = await caches.match('./index.html');
+      if (!guardada) return rede;                       // primeira vez: precisa da rede
+      return Promise.race([
+        rede.then(res => (res.ok ? res : guardada)).catch(() => guardada),
+        new Promise(r => setTimeout(() => r(guardada), ESPERA_REDE_MS))
+      ]);
+    })());
     return;
   }
 
